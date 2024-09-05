@@ -1,4 +1,4 @@
-package com.example.bootstrap
+package com.stori.challenge
 
 import org.junit.Test
 

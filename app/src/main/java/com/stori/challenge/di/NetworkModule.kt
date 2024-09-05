@@ -1,6 +1,6 @@
-package com.example.bootstrap.di
+package com.stori.challenge.di
 
-import com.example.bootstrap.BuildConfig
+import com.stori.challenge.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

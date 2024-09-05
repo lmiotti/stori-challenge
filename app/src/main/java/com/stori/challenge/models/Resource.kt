@@ -1,4 +1,4 @@
-package com.example.bootstrap.models
+package com.stori.challenge.models
 
 sealed class Resource<T>(
     val data: T? = null,

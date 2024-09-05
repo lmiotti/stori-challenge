@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.bootstrap"
+    namespace = "com.stori.challenge"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.bootstrap"
+        applicationId = "com.stori.challenge"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

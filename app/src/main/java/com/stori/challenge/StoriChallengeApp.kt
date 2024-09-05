@@ -1,7 +1,7 @@
-package com.example.bootstrap
+package com.stori.challenge
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class BootstrapApp : Application()
+class StoriChallengeApp : Application()

@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Bootstrap"
+rootProject.name = "Stori Challenge"
 include(":app")
  

@@ -1,4 +1,4 @@
-package com.example.bootstrap.ui.theme
+package com.stori.challenge.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

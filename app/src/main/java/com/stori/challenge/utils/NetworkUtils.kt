@@ -1,7 +1,7 @@
-package com.example.bootstrap.utils
+package com.stori.challenge.utils
 
-import com.example.bootstrap.models.NetworkError
-import com.example.bootstrap.models.Resource
+import com.stori.challenge.models.NetworkError
+import com.stori.challenge.models.Resource
 import retrofit2.Response
 
 object NetworkUtils {
