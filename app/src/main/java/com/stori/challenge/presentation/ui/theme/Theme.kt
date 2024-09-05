@@ -1,4 +1,4 @@
-package com.stori.challenge.ui.theme
+package com.stori.challenge.presentation.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

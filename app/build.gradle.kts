@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -86,6 +87,9 @@ dependencies {
 
     // Ok Http
     implementation(libs.logging.interceptor)
+
+    // Serialization
+    implementation(libs.jetbrains.kotlinx.serialization.json)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -1,4 +1,4 @@
-package com.stori.challenge.models
+package com.stori.challenge.domain.model
 
 sealed class Resource<T>(
     val data: T? = null,

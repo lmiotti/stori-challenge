@@ -1,4 +1,4 @@
-package com.stori.challenge.ui.theme
+package com.stori.challenge.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

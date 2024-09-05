@@ -1,7 +1,7 @@
-package com.stori.challenge.utils
+package com.stori.challenge.data.network.utils
 
-import com.stori.challenge.models.NetworkError
-import com.stori.challenge.models.Resource
+import com.stori.challenge.domain.model.NetworkError
+import com.stori.challenge.domain.model.Resource
 import retrofit2.Response
 
 object NetworkUtils {
