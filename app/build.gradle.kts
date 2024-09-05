@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     kotlin("plugin.serialization")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -90,6 +91,11 @@ dependencies {
 
     // Serialization
     implementation(libs.jetbrains.kotlinx.serialization.json)
+
+    // Firebase
+    implementation(libs.firebase.bom)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
