@@ -5,9 +5,7 @@ import com.stori.challenge.di.IoDispatcher
 import com.stori.challenge.domain.model.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class SignInUseCase @Inject constructor(
