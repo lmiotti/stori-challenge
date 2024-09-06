@@ -13,6 +13,8 @@ import javax.inject.Inject
 class AuthRemoteDataSourceImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ): AuthRemoteDataSource {
+    override val isUserLogged: Boolean
+        get() = firebaseAuth.currentUser != null
 
     override suspend fun signIn(
         email: String,

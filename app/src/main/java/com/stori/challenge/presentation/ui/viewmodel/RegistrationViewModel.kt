@@ -1,7 +1,6 @@
 package com.stori.challenge.presentation.ui.viewmodel
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stori.challenge.domain.usecase.RegisterUseCase
@@ -30,7 +29,7 @@ class RegistrationViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             registerUseCase(name, surname, email, password, photo).collect {
-                Log.e("ASD", "$it")
+                // TODO: Handle response
             }
         }
     }

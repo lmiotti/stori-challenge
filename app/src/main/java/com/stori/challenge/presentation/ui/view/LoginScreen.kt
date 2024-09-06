@@ -6,20 +6,35 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import com.stori.challenge.presentation.ui.intent.LoginIntent
 import com.stori.challenge.presentation.ui.viewmodel.AuthViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LoginScreen(
     viewModel: AuthViewModel = hiltViewModel(),
-    onRegisterClicked: () -> Unit
+    onRegisterClicked: () -> Unit,
+    goToHomeScreen: () -> Unit
 ) {
+    val lifecycle = LocalLifecycleOwner.current
+    LaunchedEffect(Unit) {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.goToHomeScreen.collectLatest {
+                goToHomeScreen()
+            }
+        }
+    }
+
     val handleIntent = { intent: LoginIntent ->
         when(intent) {
             is LoginIntent.OnLoginClicked -> viewModel.handleIntent(intent)

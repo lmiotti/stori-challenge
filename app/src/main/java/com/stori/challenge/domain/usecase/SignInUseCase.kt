@@ -18,7 +18,7 @@ class SignInUseCase @Inject constructor(
     suspend operator fun invoke(
         email: String,
         password: String
-    ): Flow<Resource<Boolean>> {
+    ): Flow<Resource<Unit>> {
         return authRepository.signIn(email, password)
             .flowOn(iODispatcher)
     }

@@ -8,10 +8,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthRemoteDataSource {
 
+    val isUserLogged: Boolean
+
     suspend fun signIn(
         email: String,
         password: String
     ): Resource<AuthResult>
+
     suspend fun createUser(
         email: String,
         password: String,

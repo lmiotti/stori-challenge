@@ -5,10 +5,14 @@ import com.stori.challenge.domain.model.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
+
+    val isUserLogged: Boolean
+
     suspend fun signIn(
         email: String,
         password: String
-    ): Flow<Resource<Boolean>>
+    ): Flow<Resource<Unit>>
+
     suspend fun register(
         name: String,
         surname: String,
