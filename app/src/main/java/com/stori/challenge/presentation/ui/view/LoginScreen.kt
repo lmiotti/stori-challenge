@@ -1,6 +1,5 @@
 package com.stori.challenge.presentation.ui.view
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
@@ -13,8 +12,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
-import com.stori.challenge.presentation.navigation.Routes
 import com.stori.challenge.presentation.ui.intent.LoginIntent
 import com.stori.challenge.presentation.ui.viewmodel.AuthViewModel
 
@@ -25,7 +22,7 @@ fun LoginScreen(
 ) {
     val handleIntent = { intent: LoginIntent ->
         when(intent) {
-            is LoginIntent.OnLoginClicked -> {}
+            is LoginIntent.OnLoginClicked -> viewModel.onLoginClicked(intent.email, intent.password)
             is LoginIntent.OnRegisterClicked -> onRegisterClicked()
         }
     }
@@ -45,7 +42,7 @@ fun LoginScreenContent(
         TextField(value = email, onValueChange = { email = it })
         TextField(value = password, onValueChange = { password = it })
         Button(
-            onClick = { handleIntent(LoginIntent.OnLoginClicked) }
+            onClick = { handleIntent(LoginIntent.OnLoginClicked(email, password)) }
         ) {
             Text("Log In")
         }
