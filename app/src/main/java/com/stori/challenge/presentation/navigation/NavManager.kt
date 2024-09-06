@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.stori.challenge.presentation.ui.view.LoginScreen
+import com.stori.challenge.presentation.ui.view.RegistrationFormScreen
 import okhttp3.Route
 
 @Composable
@@ -12,7 +13,8 @@ fun NavManager() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Routes.Login) {
         composable<Routes.Login> {
-            LoginScreen(onRegisterClicked = {})
+            //LoginScreen(onRegisterClicked = {})
+            RegistrationFormScreen()
         }
     }
 }

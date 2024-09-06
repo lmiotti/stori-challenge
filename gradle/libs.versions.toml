@@ -5,6 +5,7 @@ datastorePreferences = "1.1.1"
 firebaseAuthKtx = "23.0.0"
 firebaseBom = "33.2.0"
 firebaseFirestoreKtx = "25.1.0"
+firebaseStorageKtx = "21.0.0"
 hiltCompiler = "2.46.1"
 hiltNavigationCompose = "1.2.0"
 kotlin = "1.9.0"
@@ -33,6 +34,8 @@ converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+firebase-storage-ktx = { module = "com.google.firebase:firebase-storage-ktx" }
+google-firebase-storage-ktx = { module = "com.google.firebase:firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltCompiler" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
 jetbrains-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }

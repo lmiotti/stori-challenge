@@ -1,6 +1,5 @@
 package com.stori.challenge.di
 
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides

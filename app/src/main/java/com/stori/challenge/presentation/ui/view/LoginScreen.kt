@@ -22,7 +22,7 @@ fun LoginScreen(
 ) {
     val handleIntent = { intent: LoginIntent ->
         when(intent) {
-            is LoginIntent.OnLoginClicked -> viewModel.onLoginClicked(intent.email, intent.password)
+            is LoginIntent.OnLoginClicked -> viewModel.handleIntent(intent)
             is LoginIntent.OnRegisterClicked -> onRegisterClicked()
         }
     }
