@@ -1,4 +1,4 @@
-package com.stori.extension
+package com.stori.challenge.extension
 
 import android.util.Patterns
 import java.util.regex.Pattern

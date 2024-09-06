@@ -3,6 +3,7 @@ package com.stori.challenge.domain.usecase
 import android.net.Uri
 import com.stori.challenge.data.network.repository.AuthRepository
 import com.stori.challenge.di.IoDispatcher
+import com.stori.challenge.domain.model.RegistrationForm
 import com.stori.challenge.domain.model.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -14,14 +15,9 @@ class RegisterUseCase @Inject constructor(
     @IoDispatcher private val iODispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(
-        name: String,
-        surname: String,
-        email: String,
-        password: String,
-        photo: Uri
+    suspend operator fun invoke(form: RegistrationForm,
     ): Flow<Resource<Unit>> {
-        return authRepository.register(name, surname, email, password, photo)
+        return authRepository.register(form)
             .flowOn(iODispatcher)
     }
 }

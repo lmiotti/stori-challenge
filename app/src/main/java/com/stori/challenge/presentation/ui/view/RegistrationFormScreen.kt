@@ -19,6 +19,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
+import com.stori.challenge.domain.model.RegistrationForm
 import com.stori.challenge.presentation.ui.intent.LoginIntent
 import com.stori.challenge.presentation.ui.intent.RegistrationIntent
 import com.stori.challenge.presentation.ui.state.RegistrationState
@@ -29,13 +30,13 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun RegistrationFormScreen(
     viewModel: RegistrationViewModel = hiltViewModel(),
-    goToPhotoScreen: () -> Unit
+    goToPhotoScreen: (RegistrationForm) -> Unit
 ) {
     val lifecycle = LocalLifecycleOwner.current
     LaunchedEffect(Unit) {
         lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.goToPhotoScreen.collectLatest {
-                goToPhotoScreen()
+                goToPhotoScreen(it)
             }
         }
     }

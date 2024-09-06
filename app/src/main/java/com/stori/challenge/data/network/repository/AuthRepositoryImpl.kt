@@ -2,6 +2,7 @@ package com.stori.challenge.data.network.repository
 
 import android.net.Uri
 import com.stori.challenge.data.network.datasource.AuthRemoteDataSource
+import com.stori.challenge.domain.model.RegistrationForm
 import com.stori.challenge.domain.model.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -28,16 +29,12 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun register(
-        name: String,
-        surname: String,
-        email: String,
-        password: String,
-        photo: Uri
+        form: RegistrationForm
     ): Flow<Resource<Unit>> = flow {
         emit(Resource.Loading())
-        val result = authRemoteDataSource.createUser(email, password)
+        val result = authRemoteDataSource.createUser(form.email, form.password)
         if (result is Resource.Success) {
-            emit(authRemoteDataSource.updateProfile(result.data?.user, name, surname, photo))
+            emit(authRemoteDataSource.updateProfile(result.data?.user, form.name, form.surname, form.photo!!))
         } else {
             emit(Resource.Failure(result.error!!))
         }

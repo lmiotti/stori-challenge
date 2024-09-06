@@ -14,7 +14,12 @@ sealed class Routes {
     data object RegistrationForm: Routes()
 
     @Serializable
-    data object RegistrationPhoto: Routes()
+    data class RegistrationPhoto(
+        val name: String,
+        val surname: String,
+        val email: String,
+        val password: String
+    ): Routes()
 
     @Serializable
     data object Home: Routes()

@@ -7,8 +7,8 @@ import com.stori.challenge.domain.model.Resource
 import com.stori.challenge.domain.usecase.SignInUseCase
 import com.stori.challenge.presentation.ui.intent.LoginIntent
 import com.stori.challenge.presentation.ui.state.LoginState
-import com.stori.extension.isValidEmail
-import com.stori.extension.isValidPassword
+import com.stori.challenge.extension.isValidEmail
+import com.stori.challenge.extension.isValidPassword
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -3,12 +3,14 @@ package com.stori.challenge.presentation.ui.viewmodel
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.stori.challenge.domain.model.RegistrationForm
+import com.stori.challenge.domain.model.Resource
 import com.stori.challenge.domain.usecase.RegisterUseCase
 import com.stori.challenge.presentation.ui.intent.RegistrationIntent
 import com.stori.challenge.presentation.ui.state.LoginState
 import com.stori.challenge.presentation.ui.state.RegistrationState
-import com.stori.extension.isValidEmail
-import com.stori.extension.isValidPassword
+import com.stori.challenge.extension.isValidEmail
+import com.stori.challenge.extension.isValidPassword
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,9 +25,14 @@ class RegistrationViewModel @Inject constructor(
     private val registerUseCase: RegisterUseCase
 ): ViewModel() {
 
-    private var _goToPhotoScreen = MutableSharedFlow<Unit>()
-    val goToPhotoScreen: SharedFlow<Unit>
+    private var _goToPhotoScreen = MutableSharedFlow<RegistrationForm>()
+    val goToPhotoScreen: SharedFlow<RegistrationForm>
         get() = _goToPhotoScreen
+
+    private var _goToHomeScreen = MutableSharedFlow<Unit>()
+    val goToHomeScreen: SharedFlow<Unit>
+        get() = _goToHomeScreen
+
 
     private val _state = MutableStateFlow(RegistrationState())
     val state: StateFlow<RegistrationState>
@@ -33,8 +40,10 @@ class RegistrationViewModel @Inject constructor(
 
 
     fun handleIntent(intent: RegistrationIntent) {
-        if (intent is RegistrationIntent.OnNextClicked) {
-            validateFields(intent.name, intent.surname, intent.email, intent.password, intent.confirmPassword)
+        when (intent) {
+            is RegistrationIntent.OnNextClicked ->
+                validateFields(intent.name, intent.surname, intent.email, intent.password, intent.confirmPassword)
+            is RegistrationIntent.OnRegisterClicked -> register(intent.form)
         }
     }
 
@@ -66,7 +75,11 @@ class RegistrationViewModel @Inject constructor(
         ).any { it }
 
         if (isFormValid) {
-            viewModelScope.launch { _goToPhotoScreen.emit(Unit) }
+            viewModelScope.launch {
+                _goToPhotoScreen.emit(
+                    RegistrationForm(name = name, surname = surname, email = email, password)
+                )
+            }
         } else {
             _state.update {
                 it.copy(
@@ -83,16 +96,10 @@ class RegistrationViewModel @Inject constructor(
         }
     }
 
-    private fun register(
-        name: String,
-        surname: String,
-        email: String,
-        password: String,
-        photo: Uri
-    ) {
+    private fun register(form: RegistrationForm) {
         viewModelScope.launch {
-            registerUseCase(name, surname, email, password, photo).collect {
-                // TODO: Handle response
+            registerUseCase(form).collect {
+                if (it is Resource.Success) _goToHomeScreen.emit(Unit)
             }
         }
     }

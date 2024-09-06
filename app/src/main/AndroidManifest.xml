@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".StoriChallengeApp"
@@ -15,6 +19,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Bootstrap"
         tools:targetApi="31">
+
+        <provider
+            android:authorities="${applicationId}.provider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/path_provider"
+                />
+        </provider>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
