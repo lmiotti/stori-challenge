@@ -11,7 +11,10 @@ sealed class Routes {
     data object Login: Routes()
 
     @Serializable
-    data object Registration: Routes()
+    data object RegistrationForm: Routes()
+
+    @Serializable
+    data object RegistrationPhoto: Routes()
 
     @Serializable
     data object Home: Routes()

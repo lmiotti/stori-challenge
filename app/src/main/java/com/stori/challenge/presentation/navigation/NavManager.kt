@@ -1,16 +1,14 @@
 package com.stori.challenge.presentation.navigation
 
-import android.window.SplashScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.stori.challenge.presentation.ui.view.HomeScreen
 import com.stori.challenge.presentation.ui.view.LoginScreen
 import com.stori.challenge.presentation.ui.view.RegistrationFormScreen
+import com.stori.challenge.presentation.ui.view.RegistrationPhotoScreen
 import com.stori.challenge.presentation.ui.view.SplashScreen
-import okhttp3.Route
 
 @Composable
 fun NavManager() {
@@ -28,7 +26,7 @@ fun NavManager() {
         }
         composable<Routes.Login> {
             LoginScreen(
-                onRegisterClicked = { navController.navigate(Routes.Registration) },
+                onRegisterClicked = { navController.navigate(Routes.RegistrationForm) },
                 goToHomeScreen = {
                     navController.navigate(Routes.Home) {
                         popUpTo(Routes.Login) { inclusive = true }
@@ -36,8 +34,13 @@ fun NavManager() {
                 }
             )
         }
-        composable<Routes.Registration> {
-            RegistrationFormScreen()
+        composable<Routes.RegistrationForm> {
+            RegistrationFormScreen(
+                goToPhotoScreen = { navController.navigate(Routes.RegistrationPhoto) }
+            )
+        }
+        composable<Routes.RegistrationPhoto> {
+            RegistrationPhotoScreen()
         }
         composable<Routes.Home> {
             HomeScreen()
