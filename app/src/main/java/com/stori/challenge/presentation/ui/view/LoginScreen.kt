@@ -19,6 +19,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
+import com.stori.challenge.extension.isEmailValid
+import com.stori.challenge.extension.isPasswordValid
 import com.stori.challenge.presentation.ui.intent.LoginIntent
 import com.stori.challenge.presentation.ui.viewmodel.AuthViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -40,8 +42,8 @@ fun LoginScreen(
 
     val handleIntent = { intent: LoginIntent ->
         when(intent) {
-            is LoginIntent.OnLoginClicked -> viewModel.handleIntent(intent)
             is LoginIntent.OnRegisterClicked -> onRegisterClicked()
+            else -> viewModel.handleIntent(intent)
         }
     }
     LoginScreenContent(viewModel, handleIntent)
@@ -53,29 +55,32 @@ fun LoginScreenContent(
     handleIntent: (LoginIntent) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
-
-    val context = LocalContext.current
-
-    LaunchedEffect(state) {
-        val text = when {
-            state.isEmailEmptyError -> "Email Empty"
-            state.isEmailFormatError -> "Email Format"
-            state.isPasswordEmptyError -> "Password Empty"
-            state.isPasswordFormatError -> "Password format"
-            else -> ""
-        }
-        Toast.makeText(context, text, Toast.LENGTH_LONG).show()
-    }
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        TextField(value = email, onValueChange = { email = it })
-        TextField(value = password, onValueChange = { password = it })
+        TextField(
+            value = email,
+            onValueChange = {
+                email = it
+                handleIntent(LoginIntent.OnEmailChanged(email))
+            },
+            isError = state.isEmailError
+        )
+        TextField(
+            value = password,
+            onValueChange = {
+                password = it
+                handleIntent(LoginIntent.OnPasswordChanged(password))
+            },
+            isError = state.isPasswordError
+        )
         Button(
-            onClick = { handleIntent(LoginIntent.OnLoginClicked(email, password)) }
+            onClick = { handleIntent(LoginIntent.OnLoginClicked(email, password)) },
+            enabled = state.isLoginButtonEnabled
         ) {
             Text("Log In")
         }

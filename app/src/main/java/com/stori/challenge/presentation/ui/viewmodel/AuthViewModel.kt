@@ -1,14 +1,13 @@
 package com.stori.challenge.presentation.ui.viewmodel
 
-import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stori.challenge.domain.model.Resource
 import com.stori.challenge.domain.usecase.SignInUseCase
+import com.stori.challenge.extension.isEmailValid
+import com.stori.challenge.extension.isPasswordValid
 import com.stori.challenge.presentation.ui.intent.LoginIntent
 import com.stori.challenge.presentation.ui.state.LoginState
-import com.stori.challenge.extension.isValidEmail
-import com.stori.challenge.extension.isValidPassword
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +15,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,28 +31,11 @@ class AuthViewModel @Inject constructor(
         get() = _state
 
     fun handleIntent(intent: LoginIntent) {
-        if (intent is LoginIntent.OnLoginClicked) {
-            validateFields(intent.email, intent.password)
-        }
-    }
-
-    private fun validateFields(email: String, password: String) {
-        val isEmailEmpty = email.isEmpty()
-        val isEmailFormat = email.isValidEmail()
-        val isPasswordEmpty = password.isEmpty()
-        val isPasswordFormat = password.isValidPassword()
-
-        if (listOf(isEmailEmpty, !isEmailFormat, isPasswordEmpty, !isPasswordFormat).any { it }) {
-            _state.update {
-                it.copy(
-                    isEmailEmptyError = isEmailEmpty,
-                    isEmailFormatError = !isEmailFormat,
-                    isPasswordEmptyError = isPasswordEmpty,
-                    isPasswordFormatError = !isPasswordFormat
-                )
-            }
-        } else {
-            login(email, password)
+        when (intent) {
+            is LoginIntent.OnEmailChanged -> _state.update { it.copy(email = intent.email) }
+            is LoginIntent.OnPasswordChanged -> _state.update { it.copy(password = intent.password) }
+            is LoginIntent.OnLoginClicked -> login(intent.email, intent.password)
+            else -> {}
         }
     }
 

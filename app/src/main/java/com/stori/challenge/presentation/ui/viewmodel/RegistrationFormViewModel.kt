@@ -3,8 +3,6 @@ package com.stori.challenge.presentation.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stori.challenge.domain.model.RegistrationForm
-import com.stori.challenge.extension.isValidEmail
-import com.stori.challenge.extension.isValidPassword
 import com.stori.challenge.presentation.ui.intent.RegistrationFormIntent
 import com.stori.challenge.presentation.ui.state.RegistrationFormState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,9 +42,9 @@ class RegistrationFormViewModel @Inject constructor(): ViewModel() {
         val isNameEmpty = name.isEmpty()
         val isSurnameEmpty = surname.isEmpty()
         val isEmailEmpty = email.isEmpty()
-        val isEmailFormat = email.isValidEmail()
+        val isEmailFormat = true //email.isValidEmail()
         val isPasswordEmpty = password.isEmpty()
-        val isPasswordFormat = password.isValidPassword()
+        val isPasswordFormat = true //password.isValidPassword()
         val isConfirmPasswordEmpty = confirmPassword.isEmpty()
         val isConfirmPasswordFormat = confirmPassword == password
 
