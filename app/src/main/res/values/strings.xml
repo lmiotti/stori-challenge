@@ -22,5 +22,8 @@
     <string name="registration_form_confirm_password">Confirm password</string>
     <string name="registration_next_button">Next</string>
     <string name="registration_confirm_password_error">Password don\'t match</string>
+    <string name="registration_photo_description">To complete your registration, please take a clear photo of your ID. Make sure all details are legible and within the frame.</string>
+    <string name="registration_take_picture_button">Take picture</string>
+    <string name="registration_register_button">Register</string>
 
 </resources>

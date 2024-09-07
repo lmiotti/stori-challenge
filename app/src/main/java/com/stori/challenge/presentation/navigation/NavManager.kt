@@ -71,7 +71,8 @@ fun NavManager() {
                     navController.navigate(Routes.Home) {
                         popUpTo(Routes.Login) { inclusive = true }
                     }
-                }
+                },
+                goBack = { navController.popBackStack() }
             )
         }
         composable<Routes.Home> {
