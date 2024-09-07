@@ -1,12 +1,25 @@
 package com.stori.challenge.presentation.ui.intent
 
+import com.stori.challenge.domain.model.RegistrationForm
+
 sealed class RegistrationFormIntent {
 
-    data class OnNextClicked(
-        val name: String,
-        val surname: String,
-        val email: String,
+    data class OnNameChanged(val name: String): RegistrationFormIntent()
+    data class OnSurameChanged(val surname: String): RegistrationFormIntent()
+    data class OnEmailChanged(val email: String): RegistrationFormIntent()
+    data class OnPasswordChanged(
         val password: String,
         val confirmPassword: String
     ): RegistrationFormIntent()
+
+    data class OnConfirmPasswordChanged(
+        val password: String,
+        val confirmPassword: String
+    ): RegistrationFormIntent()
+
+    data class OnNextClicked(
+        val form: RegistrationForm
+    ): RegistrationFormIntent()
+
+    data object OnNavClicked: RegistrationFormIntent()
 }

@@ -1,14 +1,26 @@
 <resources>
     <string name="app_name">Stori Challenge</string>
 
+    <!-- Auth -->
+    <string name="auth_email">Email</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_email_error">Please enter a valid email.</string>
+    <string name="auth_password_error">Password must have at least a character in lower case, another in upper case, a number and a symbol.</string>
+
+    <!-- Log In -->
     <string name="login_validate_identity">Validate your identity</string>
     <string name="login_type_credentials">Please type your email and password</string>
-    <string name="login_email">Email</string>
-    <string name="login_email_error">Please enter a valid email.</string>
-    <string name="login_password">Password</string>
-    <string name="login_password_error">Password must have at least a character in lower case, another in upper case, a number and a symbol.</string>
     <string name="login_no_account">Don\'t you have an account?</string>
     <string name="login_login_button">Log In</string>
     <string name="login_register">Register</string>
+
+    <!-- Registration -->
+    <string name="registration_form_title">Register</string>
+    <string name="registration_form_description">Please fill out the form below to create your account. Make sure to enter accurate and valid information. All fields are required.</string>
+    <string name="registration_form_name">Name</string>
+    <string name="registration_form_surname">Surname</string>
+    <string name="registration_form_confirm_password">Confirm password</string>
+    <string name="registration_next_button">Next</string>
+    <string name="registration_confirm_password_error">Password don\'t match</string>
 
 </resources>

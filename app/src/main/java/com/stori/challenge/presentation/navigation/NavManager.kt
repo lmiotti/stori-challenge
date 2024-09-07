@@ -49,7 +49,8 @@ fun NavManager() {
                             password = form.password
                         )
                     )
-                }
+                },
+                goBack = { navController.popBackStack() }
             )
         }
         composable<Routes.RegistrationPhoto> {

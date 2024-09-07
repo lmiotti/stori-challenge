@@ -1,13 +1,24 @@
 package com.stori.challenge.presentation.ui.state
 
 data class RegistrationFormState(
-    val isLoading: Boolean = false,
-    val isNameEmptyError: Boolean = false,
-    val isSurnameEmptyError: Boolean = false,
-    val isEmailEmptyError: Boolean = false,
-    val isEmailFormatError: Boolean = false,
-    val isPasswordEmptyError: Boolean = false,
-    val isPasswordFormatError: Boolean = false,
-    val isConfirmPasswordEmptyError: Boolean = false,
-    val isConfirmPasswordFormatError: Boolean = false
-)
+    val isNameEmpty: Boolean = true,
+    val isSurnameEmpty: Boolean = true,
+    val isEmailEmpty: Boolean = true,
+    val isEmailError: Boolean = false,
+    val isPasswordEmpty: Boolean = false,
+    val isPasswordError: Boolean = false,
+    val isConfirmPasswordEmpty: Boolean = false,
+    val isConfirmPasswordError: Boolean = false
+) {
+    val isNextButtonEnabled: Boolean
+        get() {
+            return !isNameEmpty
+                    && !isSurnameEmpty
+                    && !isEmailEmpty
+                    && !isEmailError
+                    && !isPasswordEmpty
+                    && !isPasswordError
+                    && !isConfirmPasswordEmpty
+                    && !isConfirmPasswordError
+        }
+}

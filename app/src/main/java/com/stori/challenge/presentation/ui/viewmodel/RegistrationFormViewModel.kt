@@ -3,6 +3,8 @@ package com.stori.challenge.presentation.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stori.challenge.domain.model.RegistrationForm
+import com.stori.challenge.extension.isEmailValid
+import com.stori.challenge.extension.isPasswordValid
 import com.stori.challenge.presentation.ui.intent.RegistrationFormIntent
 import com.stori.challenge.presentation.ui.state.RegistrationFormState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,67 +19,55 @@ import javax.inject.Inject
 @HiltViewModel
 class RegistrationFormViewModel @Inject constructor(): ViewModel() {
 
-    private var _goToPhotoScreen = MutableSharedFlow<RegistrationForm>()
-    val goToPhotoScreen: SharedFlow<RegistrationForm>
-        get() = _goToPhotoScreen
-
     private val _state = MutableStateFlow(RegistrationFormState())
     val state: StateFlow<RegistrationFormState>
         get() = _state
 
 
     fun handleIntent(intent: RegistrationFormIntent) {
-        if (intent is RegistrationFormIntent.OnNextClicked) {
-                validateFields(intent.name, intent.surname, intent.email, intent.password, intent.confirmPassword)
+        when (intent) {
+            is RegistrationFormIntent.OnNameChanged -> validateName(intent.name)
+            is RegistrationFormIntent.OnSurameChanged -> validateSurname(intent.surname)
+            is RegistrationFormIntent.OnEmailChanged -> validateEmail(intent.email)
+            is RegistrationFormIntent.OnPasswordChanged -> validatePassword(intent.password, intent.confirmPassword)
+            is RegistrationFormIntent.OnConfirmPasswordChanged -> validateConfirmPassword(intent.password, intent.confirmPassword)
+            else -> {}
         }
     }
 
-    private fun validateFields(
-        name: String,
-        surname: String,
-        email: String,
-        password: String,
-        confirmPassword: String
-    ) {
-        val isNameEmpty = name.isEmpty()
-        val isSurnameEmpty = surname.isEmpty()
-        val isEmailEmpty = email.isEmpty()
-        val isEmailFormat = true //email.isValidEmail()
-        val isPasswordEmpty = password.isEmpty()
-        val isPasswordFormat = true //password.isValidPassword()
-        val isConfirmPasswordEmpty = confirmPassword.isEmpty()
-        val isConfirmPasswordFormat = confirmPassword == password
+    private fun validateName(name: String) {
+        _state.update { it.copy(isNameEmpty = name.isEmpty()) }
+    }
 
-        val isFormValid = !listOf(
-            isNameEmpty,
-            isSurnameEmpty,
-            isEmailEmpty,
-            !isEmailFormat,
-            isPasswordEmpty,
-            !isPasswordFormat,
-            isConfirmPasswordEmpty,
-            !isConfirmPasswordFormat
-        ).any { it }
+    private fun validateSurname(surname: String) {
+        _state.update { it.copy(isSurnameEmpty = surname.isEmpty()) }
+    }
 
-        if (isFormValid) {
-            viewModelScope.launch {
-                _goToPhotoScreen.emit(
-                    RegistrationForm(name = name, surname = surname, email = email, password)
-                )
-            }
-        } else {
-            _state.update {
-                it.copy(
-                    isNameEmptyError = isNameEmpty,
-                    isSurnameEmptyError = isSurnameEmpty,
-                    isEmailEmptyError = isEmailEmpty,
-                    isEmailFormatError = !isEmailFormat,
-                    isPasswordEmptyError = isPasswordEmpty,
-                    isPasswordFormatError = !isPasswordFormat,
-                    isConfirmPasswordEmptyError = isConfirmPasswordEmpty,
-                    isConfirmPasswordFormatError = !isConfirmPasswordFormat
-                )
-            }
+    private fun validateEmail(email: String) {
+        _state.update {
+            it.copy(
+                isEmailEmpty = email.isEmpty(),
+                isEmailError = email.isNotEmpty() && !email.isEmailValid()
+            )
+        }
+    }
+
+    private fun validatePassword(password: String, confirmPassword: String) {
+        _state.update {
+            it.copy(
+                isPasswordEmpty = password.isEmpty(),
+                isPasswordError = password.isNotEmpty() && !password.isPasswordValid(),
+                isConfirmPasswordError = password != confirmPassword
+            )
+        }
+    }
+
+    private fun validateConfirmPassword(password: String, confirmPassword: String) {
+        _state.update {
+            it.copy(
+                isConfirmPasswordEmpty = password.isEmpty(),
+                isConfirmPasswordError = password != confirmPassword
+            )
         }
     }
 }
