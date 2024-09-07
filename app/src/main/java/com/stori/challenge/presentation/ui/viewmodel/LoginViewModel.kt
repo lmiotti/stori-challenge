@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(
+class LoginViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase
 ): ViewModel() {
 
@@ -32,10 +32,28 @@ class AuthViewModel @Inject constructor(
 
     fun handleIntent(intent: LoginIntent) {
         when (intent) {
-            is LoginIntent.OnEmailChanged -> _state.update { it.copy(email = intent.email) }
-            is LoginIntent.OnPasswordChanged -> _state.update { it.copy(password = intent.password) }
+            is LoginIntent.OnEmailChanged -> validateEmail(intent.email)
+            is LoginIntent.OnPasswordChanged -> validatePassword(intent.password)
             is LoginIntent.OnLoginClicked -> login(intent.email, intent.password)
             else -> {}
+        }
+    }
+
+    private fun validateEmail(email: String) {
+        _state.update {
+            it.copy(
+                isEmailEmpty = email.isEmpty(),
+                isEmailError = email.isNotEmpty() && !email.isEmailValid()
+            )
+        }
+    }
+
+    private fun validatePassword(password: String) {
+        _state.update {
+            it.copy(
+                isPasswordEmpty = password.isEmpty(),
+                isPasswordError = password.isNotEmpty() && !password.isPasswordValid()
+            )
         }
     }
 

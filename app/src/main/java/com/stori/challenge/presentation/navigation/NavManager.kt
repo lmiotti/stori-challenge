@@ -23,7 +23,7 @@ fun NavManager() {
                 navigate = { isUserLogged ->
                     val destination = if (isUserLogged) Routes.Home else Routes.Login
                     navController.navigate(destination) {
-                        popUpTo(Routes.Home) { inclusive = true }
+                        popUpTo(Routes.Splash) { inclusive = true }
                     }
                 }
             )
