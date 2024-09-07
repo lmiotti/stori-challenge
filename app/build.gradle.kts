@@ -81,12 +81,6 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.lifecycle.runtime.compose)
 
-    // Retrofit
-    implementation(libs.converter.gson)
-
-    // Ok Http
-    implementation(libs.logging.interceptor)
-
     // Serialization
     implementation(libs.jetbrains.kotlinx.serialization.json)
 
@@ -95,7 +89,7 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
 
-    // Firebase
+    // Coil
     implementation(libs.coil.compose)
 
     testImplementation(libs.junit)
