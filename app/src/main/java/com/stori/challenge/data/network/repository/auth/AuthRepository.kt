@@ -1,6 +1,7 @@
-package com.stori.challenge.data.network.repository
+package com.stori.challenge.data.network.repository.auth
 
 import android.net.Uri
+import com.stori.challenge.data.network.model.Profile
 import com.stori.challenge.domain.model.RegistrationForm
 import com.stori.challenge.domain.model.Resource
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +15,10 @@ interface AuthRepository {
         password: String
     ): Flow<Resource<Unit>>
 
-    suspend fun register(
+    suspend fun createUser(
         form: RegistrationForm
     ): Flow<Resource<Unit>>
+
+    fun getProfile(): Profile
+    suspend fun signOut()
 }

@@ -1,6 +1,6 @@
 package com.stori.challenge.domain.usecase
 
-import com.stori.challenge.data.network.repository.AuthRepository
+import com.stori.challenge.data.network.repository.auth.AuthRepository
 import com.stori.challenge.di.IoDispatcher
 import com.stori.challenge.domain.model.Resource
 import kotlinx.coroutines.CoroutineDispatcher

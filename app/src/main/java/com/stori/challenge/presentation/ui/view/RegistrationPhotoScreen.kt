@@ -50,7 +50,7 @@ fun RegistrationPhotoScreen(
     val lifecycle = LocalLifecycleOwner.current
     LaunchedEffect(Unit) {
         lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.goToPhotoScreen.collectLatest {
+            viewModel.goToHomeScreen.collectLatest {
                 goToHomeScreen()
             }
         }
