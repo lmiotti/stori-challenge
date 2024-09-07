@@ -1,6 +1,7 @@
 package com.stori.challenge.presentation.ui.viewmodel
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stori.challenge.domain.model.RegistrationForm
@@ -57,6 +58,7 @@ class RegistrationPhotoViewModel @AssistedInject constructor(
         viewModelScope.launch {
             registerUseCase(form.copy(photo = _state.value.photo)).collect {
                 if (it is Resource.Success) _goToHomeScreen.emit(Unit)
+                if (it is Resource.Failure) Log.e("ASD", "${it.error?.message}")
             }
         }
     }

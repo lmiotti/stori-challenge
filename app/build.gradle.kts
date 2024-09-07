@@ -89,6 +89,7 @@ dependencies {
     implementation(libs.firebase.bom)
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.google.firebase.storage.ktx)
 
     // Coil
     implementation(libs.coil.compose)

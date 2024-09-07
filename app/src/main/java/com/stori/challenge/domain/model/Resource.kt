@@ -6,7 +6,7 @@ sealed class Resource<T>(
 ) {
     class Success<T>(data: T): Resource<T>(data)
     class Failure<T>(networkError: NetworkError): Resource<T>(error = networkError)
-    class Loading<T>(): Resource<T>()
+    class Loading<T>: Resource<T>()
 
 }
 

@@ -1,6 +1,7 @@
 package com.stori.challenge.data.network.repository.auth
 
 import android.net.Uri
+import com.google.firebase.auth.AuthResult
 import com.stori.challenge.data.network.model.Profile
 import com.stori.challenge.domain.model.RegistrationForm
 import com.stori.challenge.domain.model.Resource
@@ -13,12 +14,12 @@ interface AuthRepository {
     suspend fun signIn(
         email: String,
         password: String
-    ): Flow<Resource<Unit>>
+    ): Flow<Resource<AuthResult>>
 
     suspend fun createUser(
-        form: RegistrationForm
-    ): Flow<Resource<Unit>>
+        name: String,
+        password: String
+    ): Flow<Resource<AuthResult>>
 
-    fun getProfile(): Profile
-    suspend fun signOut()
+    fun signOut()
 }

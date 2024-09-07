@@ -4,6 +4,8 @@ import com.stori.challenge.data.network.datasource.auth.AuthRemoteDataSource
 import com.stori.challenge.data.network.datasource.auth.AuthRemoteDataSourceImpl
 import com.stori.challenge.data.network.datasource.movements.MovementsRemoteDataSource
 import com.stori.challenge.data.network.datasource.movements.MovementsRemoteDataSourceImpl
+import com.stori.challenge.data.network.datasource.profile.ProfileRemoteDataSource
+import com.stori.challenge.data.network.datasource.profile.ProfileRemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -18,4 +20,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindMovementsRemoteDataSource(movementsRemoteDataSourceImpl: MovementsRemoteDataSourceImpl): MovementsRemoteDataSource
+
+    @Binds
+    abstract fun bindProfileRemoteDataSource(profileRemoteDataSourceImpl: ProfileRemoteDataSourceImpl): ProfileRemoteDataSource
 }
