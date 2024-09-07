@@ -7,12 +7,17 @@ import com.stori.challenge.domain.model.RegistrationForm
 import com.stori.challenge.domain.model.Resource
 import com.stori.challenge.domain.usecase.RegisterUseCase
 import com.stori.challenge.presentation.ui.intent.RegistrationPhotoIntent
+import com.stori.challenge.presentation.ui.state.RegistrationFormState
+import com.stori.challenge.presentation.ui.state.RegistrationPhotoState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @AssistedFactory
@@ -35,13 +40,22 @@ class RegistrationPhotoViewModel @AssistedInject constructor(
     val goToHomeScreen: SharedFlow<Unit>
         get() = _goToHomeScreen
 
+    private val _state = MutableStateFlow(RegistrationPhotoState())
+    val state: StateFlow<RegistrationPhotoState>
+        get() = _state
+
+
     fun handleIntent(intent: RegistrationPhotoIntent) {
-        if (intent is RegistrationPhotoIntent.OnRegisterClicked) register(intent.photo)
+        when(intent) {
+            is RegistrationPhotoIntent.OnTakePictureClicked -> _state.update { it.copy(photo = intent.photo) }
+            is RegistrationPhotoIntent.OnRegisterClicked -> register()
+            else -> {}
+        }
     }
 
-    private fun register(photo: Uri) {
+    private fun register() {
         viewModelScope.launch {
-            registerUseCase(form.copy(photo = photo)).collect {
+            registerUseCase(form.copy(photo = _state.value.photo)).collect {
                 if (it is Resource.Success) _goToHomeScreen.emit(Unit)
             }
         }

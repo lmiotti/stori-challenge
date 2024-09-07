@@ -68,12 +68,6 @@ fun RegistrationFormScreenContent(
 ) {
     val state by stateFlow.collectAsStateWithLifecycle()
 
-    var name by rememberSaveable { mutableStateOf("") }
-    var surname by rememberSaveable { mutableStateOf("") }
-    var email by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
-    var confirmPassword by rememberSaveable { mutableStateOf("") }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -93,39 +87,29 @@ fun RegistrationFormScreenContent(
         StoriTextField(
             modifier = Modifier.padding(top = 10.dp),
             labelId = R.string.registration_form_name,
-            value = name,
-            onValueChanged = {
-                name = it
-                handleIntent(RegistrationFormIntent.OnNameChanged(name))
-            }
+            value = state.name,
+            onValueChanged = { handleIntent(RegistrationFormIntent.OnNameChanged(it)) }
         )
         StoriTextField(
             modifier = Modifier.padding(top = 5.dp),
             labelId = R.string.registration_form_surname,
-            value = surname,
-            onValueChanged = {
-                surname = it
-                handleIntent(RegistrationFormIntent.OnSurameChanged(surname))
+            value = state.surname,
+            onValueChanged = { handleIntent(RegistrationFormIntent.OnSurameChanged(it))
             }
         )
         StoriTextField(
             modifier = Modifier.padding(top = 5.dp),
             labelId = R.string.auth_email,
-            value = email,
-            onValueChanged = {
-                email = it
-                handleIntent(RegistrationFormIntent.OnEmailChanged(email))
-            },
+            value = state.email,
+            onValueChanged = { handleIntent(RegistrationFormIntent.OnEmailChanged(it)) },
             isError = state.isEmailError,
             errorId = R.string.auth_email_error
         )
         StoriTextField(
             modifier = Modifier.padding(top = 5.dp),
             labelId = R.string.auth_password,
-            value = password,
-            onValueChanged = {
-                password = it
-                handleIntent(RegistrationFormIntent.OnPasswordChanged(password, confirmPassword))
+            value = state.password,
+            onValueChanged = { handleIntent(RegistrationFormIntent.OnPasswordChanged(it))
             },
             isError = state.isPasswordError,
             errorId = R.string.auth_password_error,
@@ -134,11 +118,8 @@ fun RegistrationFormScreenContent(
         StoriTextField(
             modifier = Modifier.padding(top = 5.dp),
             labelId = R.string.registration_form_confirm_password,
-            value = confirmPassword,
-            onValueChanged = {
-                confirmPassword = it
-                handleIntent(RegistrationFormIntent.OnConfirmPasswordChanged(password, confirmPassword))
-            },
+            value = state.confirmPassword,
+            onValueChanged = { handleIntent(RegistrationFormIntent.OnConfirmPasswordChanged(it)) },
             isError = state.isConfirmPasswordError,
             errorId = R.string.registration_confirm_password_error,
             isPasswordField = true
@@ -146,7 +127,12 @@ fun RegistrationFormScreenContent(
         Spacer(modifier = Modifier.weight(1f))
         StoriButton(
             onClick = {
-                val form = RegistrationForm(name = name, surname = surname, email = email, password)
+                val form = RegistrationForm(
+                    name = state.name,
+                    surname = state.surname,
+                    email = state.email,
+                    password = state.password
+                )
                 handleIntent(RegistrationFormIntent.OnNextClicked(form))
             },
             textId = R.string.registration_next_button,

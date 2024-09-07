@@ -69,9 +69,6 @@ fun LoginScreenContent(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    var email by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -91,29 +88,23 @@ fun LoginScreenContent(
         StoriTextField(
             modifier = Modifier.padding(top = 10.dp),
             labelId = R.string.auth_email,
-            value = email,
-            onValueChanged = {
-                email = it
-                handleIntent(LoginIntent.OnEmailChanged(it))
-            },
+            value = state.email,
+            onValueChanged = { handleIntent(LoginIntent.OnEmailChanged(it)) },
             isError = state.isEmailError,
             errorId = R.string.auth_email_error
         )
         StoriTextField(
             modifier = Modifier.padding(top = 5.dp),
             labelId = R.string.auth_password,
-            value = password,
-            onValueChanged = {
-                password = it
-                handleIntent(LoginIntent.OnPasswordChanged(it))
-            },
+            value = state.password,
+            onValueChanged = { handleIntent(LoginIntent.OnPasswordChanged(it)) },
             isError = state.isPasswordError,
             isPasswordField = true,
             errorId = R.string.auth_password_error
         )
         StoriButton(
             modifier = Modifier.padding(top = 20.dp),
-            onClick = { handleIntent(LoginIntent.OnLoginClicked(email, password)) },
+            onClick = { handleIntent(LoginIntent.OnLoginClicked) },
             textId = R.string.login_login_button,
             enabled = state.isLoginButtonEnabled
         )

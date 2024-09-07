@@ -40,6 +40,7 @@ import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.stori.challenge.R
@@ -72,10 +73,7 @@ fun RegistrationPhotoScreen(
     val handleIntent = { intent: RegistrationPhotoIntent ->
         when(intent) {
             is RegistrationPhotoIntent.OnNavClicked -> goBack()
-            is RegistrationPhotoIntent.OnTakePictureClicked -> {
-
-            }
-            is RegistrationPhotoIntent.OnRegisterClicked -> viewModel.handleIntent(intent)
+            else -> viewModel.handleIntent(intent)
         }
     }
 
@@ -87,29 +85,31 @@ fun RegistrationPhotoScreen(
             )
         }
     ) {
-        RegistrationPhotoScreenContent(it, handleIntent)
+        RegistrationPhotoScreenContent(it, handleIntent, viewModel)
     }
 }
 
 @Composable
 fun RegistrationPhotoScreenContent(
     paddingValues: PaddingValues,
-    handleIntent: (RegistrationPhotoIntent) -> Unit
+    handleIntent: (RegistrationPhotoIntent) -> Unit,
+    viewModel: RegistrationPhotoViewModel
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     val context = LocalContext.current
     val file = context.createImageFile()
     val uri = FileProvider.getUriForFile(
         Objects.requireNonNull(context),
         context.packageName + ".provider", file
     )
-    var image by remember { mutableStateOf<Uri>(Uri.EMPTY) }
 
     val permissionCheckResult = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
     ){
-        image = uri
+        handleIntent(RegistrationPhotoIntent.OnTakePictureClicked(uri))
     }
 
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -149,7 +149,9 @@ fun RegistrationPhotoScreenContent(
                 modifier = Modifier
                     .size(200.dp)
                     .clip(RoundedCornerShape(10.dp)),
-                painter = rememberAsyncImagePainter(if (image.path?.isNotEmpty() == true) image else R.drawable.pic_take_picture),
+                painter = rememberAsyncImagePainter(
+                    if (state.photo.path?.isNotEmpty() == true) state.photo else R.drawable.pic_take_picture
+                ),
                 contentDescription = null
             )
         }
@@ -166,11 +168,9 @@ fun RegistrationPhotoScreenContent(
         )
         Spacer(modifier = Modifier.weight(1f))
         StoriButton(
-            onClick = {
-                handleIntent(RegistrationPhotoIntent.OnRegisterClicked(photo = uri))
-            },
+            onClick = { handleIntent(RegistrationPhotoIntent.OnRegisterClicked) },
             textId = R.string.registration_register_button,
-            enabled = image.path?.isNotEmpty() == true
+            enabled = state.isRegisterButtonEnabled
         )
     }
 }

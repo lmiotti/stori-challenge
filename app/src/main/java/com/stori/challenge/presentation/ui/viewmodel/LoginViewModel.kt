@@ -32,35 +32,17 @@ class LoginViewModel @Inject constructor(
 
     fun handleIntent(intent: LoginIntent) {
         when (intent) {
-            is LoginIntent.OnEmailChanged -> validateEmail(intent.email)
-            is LoginIntent.OnPasswordChanged -> validatePassword(intent.password)
-            is LoginIntent.OnLoginClicked -> login(intent.email, intent.password)
+            is LoginIntent.OnEmailChanged -> _state.update { it.copy(email = intent.email) }
+            is LoginIntent.OnPasswordChanged -> _state.update { it.copy(password = intent.password) }
+            is LoginIntent.OnLoginClicked -> login()
             else -> {}
         }
     }
 
-    private fun validateEmail(email: String) {
-        _state.update {
-            it.copy(
-                isEmailEmpty = email.isEmpty(),
-                isEmailError = email.isNotEmpty() && !email.isEmailValid()
-            )
-        }
-    }
-
-    private fun validatePassword(password: String) {
-        _state.update {
-            it.copy(
-                isPasswordEmpty = password.isEmpty(),
-                isPasswordError = password.isNotEmpty() && !password.isPasswordValid()
-            )
-        }
-    }
-
-    private fun login(email: String, password: String) {
+    private fun login() {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            signInUseCase(email, password).collect {
+            signInUseCase(_state.value.email, _state.value.password).collect {
                 if (it is Resource.Success) _goToHomeScreen.emit(Unit)
             }
         }
