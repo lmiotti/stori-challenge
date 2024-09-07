@@ -32,9 +32,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.stori.challenge.R
-import com.stori.challenge.domain.model.RegistrationForm
-import com.stori.challenge.presentation.ui.intent.RegistrationIntent
-import com.stori.challenge.presentation.ui.viewmodel.RegistrationViewModel
+import com.stori.challenge.presentation.ui.intent.RegistrationPhotoIntent
+import com.stori.challenge.presentation.ui.viewmodel.RegistrationPhotoViewModel
 import kotlinx.coroutines.flow.collectLatest
 import java.io.File
 import java.text.SimpleDateFormat
@@ -43,8 +42,7 @@ import java.util.Objects
 
 @Composable
 fun RegistrationPhotoScreen(
-    viewModel: RegistrationViewModel = hiltViewModel(),
-    form: RegistrationForm,
+    viewModel: RegistrationPhotoViewModel = hiltViewModel(),
     goToHomeScreen: () -> Unit
 ) {
     val lifecycle = LocalLifecycleOwner.current
@@ -56,10 +54,9 @@ fun RegistrationPhotoScreen(
         }
     }
 
-    val handleIntent = { intent: RegistrationIntent ->
+    val handleIntent = { intent: RegistrationPhotoIntent ->
         when(intent) {
-            is RegistrationIntent.OnRegisterClicked -> viewModel.handleIntent(RegistrationIntent.OnRegisterClicked(form.copy(photo = intent.form.photo)))
-            else -> {}
+            is RegistrationPhotoIntent.OnRegisterClicked -> viewModel.handleIntent(intent)
         }
     }
     Column(
@@ -71,7 +68,7 @@ fun RegistrationPhotoScreen(
 
 @Composable
 fun RegistrationPhotoScreenContent(
-    handleIntent: (RegistrationIntent) -> Unit
+    handleIntent: (RegistrationPhotoIntent) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -121,7 +118,7 @@ fun RegistrationPhotoScreenContent(
         )
         Button(
             onClick = {
-                handleIntent(RegistrationIntent.OnRegisterClicked(RegistrationForm(photo = uri)))
+                handleIntent(RegistrationPhotoIntent.OnRegisterClicked(photo = uri))
             }
         ) {
             Text("Register")

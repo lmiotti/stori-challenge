@@ -1,6 +1,7 @@
 package com.stori.challenge.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -11,6 +12,7 @@ import com.stori.challenge.presentation.ui.view.LoginScreen
 import com.stori.challenge.presentation.ui.view.RegistrationFormScreen
 import com.stori.challenge.presentation.ui.view.RegistrationPhotoScreen
 import com.stori.challenge.presentation.ui.view.SplashScreen
+import com.stori.challenge.presentation.ui.viewmodel.RegistrationPhotoViewModel
 
 @Composable
 fun NavManager() {
@@ -59,7 +61,11 @@ fun NavManager() {
                 password = route.password
             )
             RegistrationPhotoScreen(
-                form = form,
+                viewModel = hiltViewModel(
+                    creationCallback = { factory: RegistrationPhotoViewModel.Factory ->
+                        factory.create(form)
+                    }
+                ),
                 goToHomeScreen = {
                     navController.navigate(Routes.Home) {
                         popUpTo(Routes.Login) { inclusive = true }

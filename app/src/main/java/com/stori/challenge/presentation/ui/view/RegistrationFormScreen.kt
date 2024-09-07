@@ -20,16 +20,15 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.stori.challenge.domain.model.RegistrationForm
-import com.stori.challenge.presentation.ui.intent.LoginIntent
-import com.stori.challenge.presentation.ui.intent.RegistrationIntent
-import com.stori.challenge.presentation.ui.state.RegistrationState
-import com.stori.challenge.presentation.ui.viewmodel.RegistrationViewModel
+import com.stori.challenge.presentation.ui.intent.RegistrationFormIntent
+import com.stori.challenge.presentation.ui.state.RegistrationFormState
+import com.stori.challenge.presentation.ui.viewmodel.RegistrationFormViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun RegistrationFormScreen(
-    viewModel: RegistrationViewModel = hiltViewModel(),
+    viewModel: RegistrationFormViewModel = hiltViewModel(),
     goToPhotoScreen: (RegistrationForm) -> Unit
 ) {
     val lifecycle = LocalLifecycleOwner.current
@@ -49,8 +48,8 @@ fun RegistrationFormScreen(
 
 @Composable
 fun RegistrationFormScreenContent(
-    handleIntent: (RegistrationIntent) -> Unit,
-    stateFlow: StateFlow<RegistrationState>
+    handleIntent: (RegistrationFormIntent) -> Unit,
+    stateFlow: StateFlow<RegistrationFormState>
 ) {
     val state by stateFlow.collectAsStateWithLifecycle()
 
@@ -87,7 +86,7 @@ fun RegistrationFormScreenContent(
 
         Button(
             onClick = {
-                handleIntent(RegistrationIntent.OnNextClicked(name, surname, email, password, confirmPassword))
+                handleIntent(RegistrationFormIntent.OnNextClicked(name, surname, email, password, confirmPassword))
             }
         ) {
             Text("Next")

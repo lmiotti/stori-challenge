@@ -1,16 +1,12 @@
 package com.stori.challenge.presentation.ui.viewmodel
 
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stori.challenge.domain.model.RegistrationForm
-import com.stori.challenge.domain.model.Resource
-import com.stori.challenge.domain.usecase.RegisterUseCase
-import com.stori.challenge.presentation.ui.intent.RegistrationIntent
-import com.stori.challenge.presentation.ui.state.LoginState
-import com.stori.challenge.presentation.ui.state.RegistrationState
 import com.stori.challenge.extension.isValidEmail
 import com.stori.challenge.extension.isValidPassword
+import com.stori.challenge.presentation.ui.intent.RegistrationFormIntent
+import com.stori.challenge.presentation.ui.state.RegistrationFormState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,29 +17,20 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegistrationViewModel @Inject constructor(
-    private val registerUseCase: RegisterUseCase
-): ViewModel() {
+class RegistrationFormViewModel @Inject constructor(): ViewModel() {
 
     private var _goToPhotoScreen = MutableSharedFlow<RegistrationForm>()
     val goToPhotoScreen: SharedFlow<RegistrationForm>
         get() = _goToPhotoScreen
 
-    private var _goToHomeScreen = MutableSharedFlow<Unit>()
-    val goToHomeScreen: SharedFlow<Unit>
-        get() = _goToHomeScreen
-
-
-    private val _state = MutableStateFlow(RegistrationState())
-    val state: StateFlow<RegistrationState>
+    private val _state = MutableStateFlow(RegistrationFormState())
+    val state: StateFlow<RegistrationFormState>
         get() = _state
 
 
-    fun handleIntent(intent: RegistrationIntent) {
-        when (intent) {
-            is RegistrationIntent.OnNextClicked ->
+    fun handleIntent(intent: RegistrationFormIntent) {
+        if (intent is RegistrationFormIntent.OnNextClicked) {
                 validateFields(intent.name, intent.surname, intent.email, intent.password, intent.confirmPassword)
-            is RegistrationIntent.OnRegisterClicked -> register(intent.form)
         }
     }
 
@@ -92,14 +79,6 @@ class RegistrationViewModel @Inject constructor(
                     isConfirmPasswordEmptyError = isConfirmPasswordEmpty,
                     isConfirmPasswordFormatError = !isConfirmPasswordFormat
                 )
-            }
-        }
-    }
-
-    private fun register(form: RegistrationForm) {
-        viewModelScope.launch {
-            registerUseCase(form).collect {
-                if (it is Resource.Success) _goToHomeScreen.emit(Unit)
             }
         }
     }

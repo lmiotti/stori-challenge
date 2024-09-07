@@ -14,8 +14,7 @@ class RegisterUseCase @Inject constructor(
     @IoDispatcher private val iODispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(form: RegistrationForm,
-    ): Flow<Resource<Unit>> {
+    suspend operator fun invoke(form: RegistrationForm): Flow<Resource<Unit>> {
         return repository.createUser(form)
             .flowOn(iODispatcher)
     }

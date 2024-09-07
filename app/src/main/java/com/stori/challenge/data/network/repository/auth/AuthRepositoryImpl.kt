@@ -42,7 +42,7 @@ class AuthRepositoryImpl @Inject constructor(
         emit(Resource.Loading())
         val result = remoteDataSource.createUser(form.email, form.password)
         if (result is Resource.Success) {
-            updateProfile(result.data?.user, form)
+            emit(updateProfile(result.data?.user, form))
         } else {
             emit(Resource.Failure(result.error!!))
         }

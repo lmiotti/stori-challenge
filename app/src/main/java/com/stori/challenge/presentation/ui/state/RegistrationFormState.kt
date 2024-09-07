@@ -1,6 +1,6 @@
 package com.stori.challenge.presentation.ui.state
 
-data class RegistrationState(
+data class RegistrationFormState(
     val isLoading: Boolean = false,
     val isNameEmptyError: Boolean = false,
     val isSurnameEmptyError: Boolean = false,
