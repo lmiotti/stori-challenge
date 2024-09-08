@@ -22,14 +22,14 @@ class ProfileRemoteDataSourceImpl @Inject constructor(
     override suspend fun uploadImage(image: Uri?): Flow<Resource<String>> = flow {
         image?.let {imageUri ->
             val imageRef = firebaseStorage.child("images/${UUID.randomUUID()}")
-            val result = try {
+            val response = try {
                 val taskSnapshot = imageRef.putFile(imageUri).await()
                 val downloadUri = taskSnapshot.metadata?.reference?.downloadUrl?.await()
                 Resource.Success(data = downloadUri.toString())
             } catch (e: Exception) {
                 Resource.Failure(e.message)
             }
-            emit(result)
+            emit(response)
         } ?: emit(Resource.Failure("ImageUri is null"))
     }
 
@@ -47,31 +47,28 @@ class ProfileRemoteDataSourceImpl @Inject constructor(
                 "email" to email,
                 "imagePath" to imagePath
             )
-            val result = try {
+            val response = try {
                 firestore.collection("Users").add(map).await()
                 Resource.Success(Unit)
             } catch (e: Exception) {
                 Resource.Failure(e.message)
             }
-            emit(result)
+            emit(response)
         } ?: emit(Resource.Failure("Uid is null"))
     }
 
     override fun getProfile(): Flow<Resource<Profile>> = flow {
         firebaseAuth.currentUser?.uid?.let { uid ->
-            val result = try {
-                val a = firestore.collection("Users")
+            val response = try {
+                val collection = firestore.collection("Users")
                     .whereEqualTo("uid", uid)
                     .get()
                     .await()
-                Resource.Success(a.documents.mapNotNull { it.toObject(Profile::class.java) }.first())
+                Resource.Success(collection.documents.mapNotNull { it.toObject(Profile::class.java) }.first())
             } catch (e: Exception) {
-                Log.e("ASD", "AA ${e.message}")
-
                 Resource.Failure(e.message)
             }
-            Log.e("ASD", "AA $result")
-            emit(result)
+            emit(response)
         } ?: emit(Resource.Failure("Uid is null"))
 
     }

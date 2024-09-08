@@ -23,8 +23,8 @@ class RegisterUseCase @Inject constructor(
 
     suspend operator fun invoke(form: RegistrationForm): Flow<Resource<Unit>> = flow {
         emit(Resource.Loading())
-        val result = authRepository.createUser(form.email, form.password)
-        result.collect {
+        val response = authRepository.createUser(form.email, form.password)
+        response.collect {
             when (it) {
                 is Resource.Success -> emitAll(uploadImage(form))
                 is Resource.Failure -> emit(Resource.Failure<Unit>(it.error))
@@ -36,8 +36,8 @@ class RegisterUseCase @Inject constructor(
     private suspend fun uploadImage(
         form: RegistrationForm
     ): Flow<Resource<Unit>> = flow {
-        val result = profileRepository.uploadImage(form.photo)
-        result.collect {
+        val response = profileRepository.uploadImage(form.photo)
+        response.collect {
             when (it) {
                 is Resource.Success -> emitAll(updateProfile(form, it.data ?: ""))
                 is Resource.Failure -> emit(Resource.Failure(it.error))

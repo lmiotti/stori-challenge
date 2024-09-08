@@ -25,9 +25,9 @@ class SplashViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val result = isUserLoggedUseCase()
+            val response = isUserLoggedUseCase()
             withContext(defaultDispatcher) { delay(DELAY_TIME) }
-            _isUserLogged.emit(result)
+            _isUserLogged.emit(response)
         }
     }
 

@@ -1,21 +1,20 @@
 package com.stori.challenge.presentation.ui.view
 
+import android.widget.Toast
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -25,10 +24,12 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.stori.challenge.R
+import com.stori.challenge.presentation.ui.component.LoadingIndicator
 import com.stori.challenge.presentation.ui.component.StoriButton
 import com.stori.challenge.presentation.ui.component.StoriTextField
 import com.stori.challenge.presentation.ui.component.StoriTopBar
 import com.stori.challenge.presentation.ui.intent.LoginIntent
+import com.stori.challenge.presentation.ui.state.LoginState
 import com.stori.challenge.presentation.ui.viewmodel.LoginViewModel
 import kotlinx.coroutines.flow.collectLatest
 
@@ -38,7 +39,18 @@ fun LoginScreen(
     onRegisterClicked: () -> Unit,
     goToHomeScreen: () -> Unit
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     val lifecycle = LocalLifecycleOwner.current
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.showError.collectLatest {
+                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
     LaunchedEffect(Unit) {
         lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.goToHomeScreen.collectLatest {
@@ -54,21 +66,25 @@ fun LoginScreen(
         }
     }
 
-    Scaffold(
-        topBar = { StoriTopBar() }
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        LoginScreenContent(it, viewModel, handleIntent)
+        Scaffold(
+            topBar = { StoriTopBar() }
+        ) {
+            LoginScreenContent(it, state, handleIntent)
+        }
+
+        if (state.isLoading) LoadingIndicator()
     }
 }
 
 @Composable
 fun LoginScreenContent(
     paddingValues: PaddingValues,
-    viewModel: LoginViewModel = hiltViewModel(),
+    state: LoginState,
     handleIntent: (LoginIntent) -> Unit
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
     Column(
         modifier = Modifier
             .fillMaxSize()

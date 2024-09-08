@@ -4,11 +4,11 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
-import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,16 +18,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,10 +40,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.stori.challenge.R
+import com.stori.challenge.presentation.ui.component.LoadingIndicator
 import com.stori.challenge.presentation.ui.component.StoriButton
 import com.stori.challenge.presentation.ui.component.StoriTopBar
-import com.stori.challenge.presentation.ui.intent.RegistrationFormIntent
 import com.stori.challenge.presentation.ui.intent.RegistrationPhotoIntent
+import com.stori.challenge.presentation.ui.state.RegistrationPhotoState
 import com.stori.challenge.presentation.ui.viewmodel.RegistrationPhotoViewModel
 import kotlinx.coroutines.flow.collectLatest
 import java.io.File
@@ -61,11 +58,23 @@ fun RegistrationPhotoScreen(
     goToHomeScreen: () -> Unit,
     goBack: () -> Unit
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     val lifecycle = LocalLifecycleOwner.current
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
         lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.goToHomeScreen.collectLatest {
                 goToHomeScreen()
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.showError.collectLatest {
+                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -77,26 +86,33 @@ fun RegistrationPhotoScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            StoriTopBar(
-                showNavButton = true,
-                onNavClicked = { handleIntent(RegistrationPhotoIntent.OnNavClicked) }
-            )
-        }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.primary)
     ) {
-        RegistrationPhotoScreenContent(it, handleIntent, viewModel)
+        Scaffold(
+            topBar = {
+                StoriTopBar(
+                    showNavButton = true,
+                    onNavClicked = { handleIntent(RegistrationPhotoIntent.OnNavClicked) }
+                )
+            }
+        ) {
+            RegistrationPhotoScreenContent(it, state, handleIntent)
+        }
+
+        if (state.showSuccess) SuccessScreen()
+        if (state.isLoading) LoadingIndicator()
     }
 }
 
 @Composable
 fun RegistrationPhotoScreenContent(
     paddingValues: PaddingValues,
+    state: RegistrationPhotoState,
     handleIntent: (RegistrationPhotoIntent) -> Unit,
-    viewModel: RegistrationPhotoViewModel
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
     val context = LocalContext.current
     val file = context.createImageFile()
     val uri = FileProvider.getUriForFile(

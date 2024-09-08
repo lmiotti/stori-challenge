@@ -17,11 +17,11 @@ class MovementsRemoteDataSourceImpl @Inject constructor(
     override suspend fun getMovements(): Flow<Resource<List<MovementApiResponse>>> = flow {
         firebaseAuth.currentUser?.uid?.let { uid ->
             try {
-                val result = firestore.collection("Movements")
+                val response = firestore.collection("Movements")
                     .whereEqualTo("userId", uid)
                     .get()
                     .await()
-                val movements = result.documents.mapNotNull { it.toObject(MovementApiResponse::class.java) }
+                val movements = response.documents.mapNotNull { it.toObject(MovementApiResponse::class.java) }
                 Resource.Success(movements)
             } catch (e: Exception) {
                 Resource.Failure(e.message)

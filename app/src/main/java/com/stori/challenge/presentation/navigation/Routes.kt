@@ -22,5 +22,10 @@ sealed class Routes {
     ): Routes()
 
     @Serializable
+    data class Success<T : Routes>(
+        val destination: T
+    ): Routes()
+
+    @Serializable
     data object Home: Routes()
 }

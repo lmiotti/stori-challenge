@@ -36,13 +36,20 @@ class HomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             getProfileUseCase().collect {
-                if (it is Resource.Success) _state.update { it.copy(name = it.name, photo = it.photo) }
-            }
-            getMovementsUseCase().collect { response ->
-                if (response is Resource.Success) {
-                    _state.update { it.copy(movements = response.data ?: listOf()) }
+                when(it) {
+                    is Resource.Loading -> _state.update { it.copy(isLoading = true) }
+                    is Resource.Success -> _state.update { it.copy(name = it.name, photo = it.photo) }
+                    is Resource.Failure -> {}
                 }
             }
+            getMovementsUseCase().collect {
+                when(it) {
+                    is Resource.Loading -> _state.update { it.copy(isLoading = true) }
+                    is Resource.Success -> _state.update { it.copy(movements = it.movements) }
+                    is Resource.Failure -> {}
+                }
+            }
+            _state.update { it.copy(isLoading = false) }
         }
     }
 

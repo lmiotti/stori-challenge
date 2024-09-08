@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.stori.challenge.di.DefaultDispatcher
 import com.stori.challenge.domain.model.RegistrationForm
 import com.stori.challenge.domain.model.Resource
 import com.stori.challenge.domain.usecase.RegisterUseCase
@@ -14,12 +15,15 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AssistedFactory
 interface MyViewModelFactory {
@@ -29,7 +33,8 @@ interface MyViewModelFactory {
 @HiltViewModel(assistedFactory = RegistrationPhotoViewModel.Factory::class)
 class RegistrationPhotoViewModel @AssistedInject constructor(
     @Assisted private val form: RegistrationForm,
-    private val registerUseCase: RegisterUseCase
+    private val registerUseCase: RegisterUseCase,
+    @DefaultDispatcher val defaultDispatcher: CoroutineDispatcher
 ): ViewModel() {
 
     @AssistedFactory
@@ -40,6 +45,10 @@ class RegistrationPhotoViewModel @AssistedInject constructor(
     private var _goToHomeScreen = MutableSharedFlow<Unit>()
     val goToHomeScreen: SharedFlow<Unit>
         get() = _goToHomeScreen
+
+    private var _showError = MutableSharedFlow<String>()
+    val showError: SharedFlow<String>
+        get() = _showError
 
     private val _state = MutableStateFlow(RegistrationPhotoState())
     val state: StateFlow<RegistrationPhotoState>
@@ -56,10 +65,22 @@ class RegistrationPhotoViewModel @AssistedInject constructor(
 
     private fun register() {
         viewModelScope.launch {
-            registerUseCase(form.copy(photo = _state.value.photo)).collect {
-                if (it is Resource.Success) _goToHomeScreen.emit(Unit)
-                if (it is Resource.Failure) Log.e("ASD", "${it.error}")
+            registerUseCase(form.copy(photo = _state.value.photo)).collect { response ->
+                when(response) {
+                    is Resource.Loading -> _state.update { it.copy(isLoading = true) }
+                    is Resource.Success -> showSuccessDialog()
+                    is Resource.Failure -> {
+                        response.error?.let { _showError.emit(it) }
+                        _state.update { it.copy(isLoading = false) }
+                    }
+                }
             }
         }
+    }
+
+    private suspend fun showSuccessDialog() {
+        _state.update { it.copy(showSuccess = true, isLoading = false) }
+        withContext(defaultDispatcher) { delay(5000L) }
+        _goToHomeScreen.emit(Unit)
     }
 }

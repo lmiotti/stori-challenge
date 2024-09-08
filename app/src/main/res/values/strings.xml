@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Stori Challenge</string>
 
+    <string name="loading">Loading ...</string>
+
     <!-- Auth -->
     <string name="auth_email">Email</string>
     <string name="auth_password">Password</string>
@@ -25,5 +27,6 @@
     <string name="registration_photo_description">To complete your registration, please take a clear photo of your ID. Make sure all details are legible and within the frame.</string>
     <string name="registration_take_picture_button">Take picture</string>
     <string name="registration_register_button">Register</string>
+    <string name="registration_success">Account has been created successfully.</string>
 
 </resources>

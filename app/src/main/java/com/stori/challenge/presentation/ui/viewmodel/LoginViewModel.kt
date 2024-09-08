@@ -26,6 +26,10 @@ class LoginViewModel @Inject constructor(
     val goToHomeScreen: SharedFlow<Unit>
         get() = _goToHomeScreen
 
+    private var _showError = MutableSharedFlow<String>()
+    val showError: SharedFlow<String>
+        get() = _showError
+
     private val _state = MutableStateFlow(LoginState())
     val state: StateFlow<LoginState>
         get() = _state
@@ -40,10 +44,20 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun login() {
-        _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            signInUseCase(_state.value.email, _state.value.password).collect {
-                if (it is Resource.Success) _goToHomeScreen.emit(Unit)
+            val signIn = signInUseCase(_state.value.email, _state.value.password)
+            signIn.collect {
+                when(it) {
+                    is Resource.Loading -> _state.update { it.copy(isLoading = true) }
+                    is Resource.Success -> {
+                        _state.update { it.copy(isLoading = false) }
+                        _goToHomeScreen.emit(Unit)
+                    }
+                    is Resource.Failure -> {
+                        _state.update { it.copy(isLoading = false) }
+                        _showError.emit(it.error ?: "")
+                    }
+                }
             }
         }
     }

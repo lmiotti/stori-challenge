@@ -35,6 +35,8 @@ fun RegistrationFormScreen(
     goToPhotoScreen: (RegistrationForm) -> Unit,
     goBack: () -> Unit
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     val handleIntent = { intent: RegistrationFormIntent ->
         when(intent) {
             is RegistrationFormIntent.OnNavClicked -> goBack()
@@ -51,11 +53,7 @@ fun RegistrationFormScreen(
             )
         }
     ) {
-        RegistrationFormScreenContent(
-            it,
-            handleIntent = handleIntent,
-            viewModel.state
-        )
+        RegistrationFormScreenContent(it, state, handleIntent)
     }
 
 }
@@ -63,11 +61,9 @@ fun RegistrationFormScreen(
 @Composable
 fun RegistrationFormScreenContent(
     paddingValues: PaddingValues,
+    state: RegistrationFormState,
     handleIntent: (RegistrationFormIntent) -> Unit,
-    stateFlow: StateFlow<RegistrationFormState>
 ) {
-    val state by stateFlow.collectAsStateWithLifecycle()
-
     Column(
         modifier = Modifier
             .fillMaxSize()

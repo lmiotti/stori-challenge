@@ -23,38 +23,38 @@ class AuthRemoteDataSourceImpl @Inject constructor(
         email: String,
         password: String
     ): Flow<Resource<AuthResult>> = flow {
-        val result = try {
+        val response = try {
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
             Resource.Success(result)
         } catch (e: Exception) {
             Resource.Failure(e.message)
         }
-        emit(result)
+        emit(response)
     }
 
     override suspend fun createUser(
         email: String,
         password: String,
     ): Flow<Resource<AuthResult>> = flow {
-        val result = try {
+        val response = try {
             val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             Resource.Success(result)
         } catch (e: Exception) {
             Resource.Failure(e.message)
         }
-        emit(result)
+        emit(response)
     }
 
     override suspend fun uploadImage(image: Uri): Flow<Resource<String>> = flow {
         val imageRef = firebaseStorage.child("images/${UUID.randomUUID()}")
-        val result = try {
+        val response = try {
             val taskSnapshot = imageRef.putFile(image).await()
             val downloadUri = taskSnapshot.metadata?.reference?.downloadUrl?.await()
             Resource.Success(data = downloadUri.toString())
         } catch (e: Exception) {
             Resource.Failure(e.message)
         }
-        emit(result)
+        emit(response)
     }
 
     override fun signOut() {

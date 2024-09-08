@@ -19,8 +19,8 @@ class SignInUseCase @Inject constructor(
         password: String
     ): Flow<Resource<Unit>> = flow {
         emit(Resource.Loading<Unit>())
-        val result = authRepository.signIn(email, password)
-        result.collect {
+        val response = authRepository.signIn(email, password)
+        response.collect {
             when (it) {
                 is Resource.Success -> {
                     emit(Resource.Success(Unit))
