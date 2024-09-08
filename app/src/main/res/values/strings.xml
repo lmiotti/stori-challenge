@@ -7,7 +7,7 @@
     <string name="auth_email">Email</string>
     <string name="auth_password">Password</string>
     <string name="auth_email_error">Please enter a valid email.</string>
-    <string name="auth_password_error">Password must have at least a character in lower case, another in upper case, a number and a symbol.</string>
+    <string name="auth_password_error">Password must contain at least a character in lower case, another in upper case, a number and a symbol.</string>
 
     <!-- Log In -->
     <string name="login_validate_identity">Validate your identity</string>
@@ -28,5 +28,11 @@
     <string name="registration_take_picture_button">Take picture</string>
     <string name="registration_register_button">Register</string>
     <string name="registration_success">Account has been created successfully.</string>
+
+    <!-- Home -->
+    <string name="home_hi_format">Hi %s!</string>
+    <string name="home_balance">Balance</string>
+    <string name="home_money_format">$ %.2f</string>
+    <string name="home_movements">Movements</string>
 
 </resources>

@@ -5,8 +5,10 @@ import com.stori.challenge.di.IoDispatcher
 import com.stori.challenge.domain.model.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class SignInUseCase @Inject constructor(
@@ -19,19 +21,14 @@ class SignInUseCase @Inject constructor(
         password: String
     ): Flow<Resource<Unit>> = flow {
         emit(Resource.Loading<Unit>())
-        val response = authRepository.signIn(email, password)
-        response.collect {
-            when (it) {
-                is Resource.Success -> {
-                    emit(Resource.Success(Unit))
-                }
-                is Resource.Failure -> {
-                    emit(Resource.Failure<Unit>(it.error!!))
-                }
-                is Resource.Loading -> {
-                    emit(Resource.Loading<Unit>())
-                }
-            }
+        emitAll(authRepository.signIn(email, password))
+    }
+    .flowOn(iODispatcher)
+    .map {
+        when (it) {
+            is Resource.Success -> Resource.Success(Unit)
+            is Resource.Failure -> Resource.Failure(it.error!!)
+            is Resource.Loading -> Resource.Loading()
         }
-    }.flowOn(iODispatcher)
+    }
 }

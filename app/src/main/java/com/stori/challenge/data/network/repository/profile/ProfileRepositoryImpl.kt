@@ -1,9 +1,8 @@
 package com.stori.challenge.data.network.repository.profile
 
 import android.net.Uri
-import com.google.firebase.auth.FirebaseUser
 import com.stori.challenge.data.network.datasource.profile.ProfileRemoteDataSource
-import com.stori.challenge.data.network.model.Profile
+import com.stori.challenge.data.network.model.ProfileDTO
 import com.stori.challenge.domain.model.RegistrationForm
 import com.stori.challenge.domain.model.Resource
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +12,7 @@ class ProfileRepositoryImpl @Inject constructor(
     private val remoteDataSource: ProfileRemoteDataSource
 ): ProfileRepository {
 
-    override fun getProfile(): Flow<Resource<Profile>> {
+    override fun getProfile(): Flow<Resource<ProfileDTO>> {
         return remoteDataSource.getProfile()
     }
 

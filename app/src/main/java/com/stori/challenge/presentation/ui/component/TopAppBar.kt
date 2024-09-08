@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.res.dimensionResource
 import com.stori.challenge.R
 
@@ -25,15 +26,19 @@ fun StoriTopBar(
     showNavButton: Boolean = false,
     showAction: Boolean = false,
     onNavClicked: () -> Unit = {},
-    onActionClicked: () -> Unit = {}
+    onActionClicked: () -> Unit = {},
+    isHome: Boolean = false
 ) {
     TopAppBar(
         modifier = Modifier.shadow(dimensionResource(id = R.dimen.top_bar_shadow)),
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = if (isHome) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary
+        ),
         title = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_stori),
                 contentDescription = "Logo",
-                tint = MaterialTheme.colorScheme.secondary
+                tint = if (isHome) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
             )
         },
         navigationIcon = {
@@ -42,7 +47,7 @@ fun StoriTopBar(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Back",
-                        tint = MaterialTheme.colorScheme.secondary
+                        tint = if (isHome) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
                     )
                 }
             }
@@ -53,7 +58,7 @@ fun StoriTopBar(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                         contentDescription = "Back",
-                        tint = MaterialTheme.colorScheme.secondary
+                        tint = if (isHome) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
                     )
                 }
             }

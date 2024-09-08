@@ -22,10 +22,8 @@ sealed class Routes {
     ): Routes()
 
     @Serializable
-    data class Success<T : Routes>(
-        val destination: T
-    ): Routes()
+    data object Home: Routes()
 
     @Serializable
-    data object Home: Routes()
+    data object MovementDetails: Routes()
 }

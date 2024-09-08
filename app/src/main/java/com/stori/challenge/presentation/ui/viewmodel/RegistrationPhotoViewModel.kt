@@ -1,15 +1,11 @@
 package com.stori.challenge.presentation.ui.viewmodel
 
-import android.net.Uri
-import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stori.challenge.di.DefaultDispatcher
 import com.stori.challenge.domain.model.RegistrationForm
 import com.stori.challenge.domain.model.Resource
 import com.stori.challenge.domain.usecase.RegisterUseCase
 import com.stori.challenge.presentation.ui.intent.RegistrationPhotoIntent
-import com.stori.challenge.presentation.ui.state.RegistrationFormState
 import com.stori.challenge.presentation.ui.state.RegistrationPhotoState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -18,9 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

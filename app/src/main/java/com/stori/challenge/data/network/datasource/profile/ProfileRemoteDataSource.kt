@@ -1,8 +1,7 @@
 package com.stori.challenge.data.network.datasource.profile
 
 import android.net.Uri
-import com.google.firebase.auth.FirebaseUser
-import com.stori.challenge.data.network.model.Profile
+import com.stori.challenge.data.network.model.ProfileDTO
 import com.stori.challenge.domain.model.Resource
 import kotlinx.coroutines.flow.Flow
 
@@ -16,5 +15,5 @@ interface ProfileRemoteDataSource {
         imagePath: String
     ): Flow<Resource<Unit>>
 
-    fun getProfile(): Flow<Resource<Profile>>
+    fun getProfile(): Flow<Resource<ProfileDTO>>
 }

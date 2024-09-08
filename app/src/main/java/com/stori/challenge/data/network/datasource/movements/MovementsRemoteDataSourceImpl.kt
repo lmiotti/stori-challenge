@@ -2,7 +2,7 @@ package com.stori.challenge.data.network.datasource.movements
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.stori.challenge.data.network.model.MovementApiResponse
+import com.stori.challenge.data.network.model.MovementDTO
 import com.stori.challenge.domain.model.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -14,18 +14,19 @@ class MovementsRemoteDataSourceImpl @Inject constructor(
     private val firestore: FirebaseFirestore
 ): MovementsRemoteDataSource {
 
-    override suspend fun getMovements(): Flow<Resource<List<MovementApiResponse>>> = flow {
+    override suspend fun getMovements(): Flow<Resource<List<MovementDTO>>> = flow {
         firebaseAuth.currentUser?.uid?.let { uid ->
-            try {
-                val response = firestore.collection("Movements")
+            val response = try {
+                val collection = firestore.collection("Movements")
                     .whereEqualTo("userId", uid)
                     .get()
                     .await()
-                val movements = response.documents.mapNotNull { it.toObject(MovementApiResponse::class.java) }
+                val movements = collection.documents.mapNotNull { it.toObject(MovementDTO::class.java) }
                 Resource.Success(movements)
             } catch (e: Exception) {
                 Resource.Failure(e.message)
             }
-        } ?: Resource.Failure("Uid is null")
+            emit(response)
+        } ?: emit(Resource.Failure("Uid is null"))
     }
 }

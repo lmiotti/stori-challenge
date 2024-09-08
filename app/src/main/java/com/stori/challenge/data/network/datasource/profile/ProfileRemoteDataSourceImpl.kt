@@ -1,11 +1,10 @@
 package com.stori.challenge.data.network.datasource.profile
 
 import android.net.Uri
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.StorageReference
-import com.stori.challenge.data.network.model.Profile
+import com.stori.challenge.data.network.model.ProfileDTO
 import com.stori.challenge.domain.model.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -57,14 +56,14 @@ class ProfileRemoteDataSourceImpl @Inject constructor(
         } ?: emit(Resource.Failure("Uid is null"))
     }
 
-    override fun getProfile(): Flow<Resource<Profile>> = flow {
+    override fun getProfile(): Flow<Resource<ProfileDTO>> = flow {
         firebaseAuth.currentUser?.uid?.let { uid ->
             val response = try {
                 val collection = firestore.collection("Users")
                     .whereEqualTo("uid", uid)
                     .get()
                     .await()
-                Resource.Success(collection.documents.mapNotNull { it.toObject(Profile::class.java) }.first())
+                Resource.Success(collection.documents.mapNotNull { it.toObject(ProfileDTO::class.java) }.first())
             } catch (e: Exception) {
                 Resource.Failure(e.message)
             }

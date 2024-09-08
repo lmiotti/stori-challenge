@@ -9,6 +9,7 @@ import androidx.navigation.toRoute
 import com.stori.challenge.domain.model.RegistrationForm
 import com.stori.challenge.presentation.ui.view.HomeScreen
 import com.stori.challenge.presentation.ui.view.LoginScreen
+import com.stori.challenge.presentation.ui.view.MovementDetailsScreen
 import com.stori.challenge.presentation.ui.view.RegistrationFormScreen
 import com.stori.challenge.presentation.ui.view.RegistrationPhotoScreen
 import com.stori.challenge.presentation.ui.view.SplashScreen
@@ -82,6 +83,14 @@ fun NavManager() {
                         popUpTo(Routes.Home) { inclusive = true }
                     }
                 },
+                goToMovementDetail = {
+                    navController.navigate(Routes.MovementDetails)
+                }
+            )
+        }
+        composable<Routes.MovementDetails> {
+            MovementDetailsScreen(
+                goBackClicked = { navController.popBackStack() }
             )
         }
     }

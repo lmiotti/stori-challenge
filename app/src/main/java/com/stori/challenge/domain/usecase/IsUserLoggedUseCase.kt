@@ -11,7 +11,5 @@ class IsUserLoggedUseCase @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(): Boolean = withContext(dispatcher) {
-        repository.isUserLogged
-    }
+    operator fun invoke(): Boolean = repository.isUserLogged
 }

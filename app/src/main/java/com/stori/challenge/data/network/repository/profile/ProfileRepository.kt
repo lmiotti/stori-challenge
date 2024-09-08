@@ -1,15 +1,14 @@
 package com.stori.challenge.data.network.repository.profile
 
 import android.net.Uri
-import com.google.firebase.auth.FirebaseUser
-import com.stori.challenge.data.network.model.Profile
+import com.stori.challenge.data.network.model.ProfileDTO
 import com.stori.challenge.domain.model.RegistrationForm
 import com.stori.challenge.domain.model.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface ProfileRepository {
 
-    fun getProfile(): Flow<Resource<Profile>>
+    fun getProfile(): Flow<Resource<ProfileDTO>>
 
     suspend fun uploadImage(image: Uri?): Flow<Resource<String>>
 

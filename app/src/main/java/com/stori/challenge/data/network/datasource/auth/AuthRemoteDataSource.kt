@@ -3,7 +3,6 @@ package com.stori.challenge.data.network.datasource.auth
 import android.net.Uri
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
-import com.stori.challenge.data.network.model.Profile
 import com.stori.challenge.domain.model.Resource
 import kotlinx.coroutines.flow.Flow
 

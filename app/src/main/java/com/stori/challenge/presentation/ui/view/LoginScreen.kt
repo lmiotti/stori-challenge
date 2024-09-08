@@ -14,6 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -77,6 +78,8 @@ fun LoginScreenContent(
     state: LoginState,
     handleIntent: (LoginIntent) -> Unit
 ) {
+    val keyboard = LocalSoftwareKeyboardController.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -112,7 +115,10 @@ fun LoginScreenContent(
         )
         StoriButton(
             modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_xl)),
-            onClick = { handleIntent(LoginIntent.OnLoginClicked) },
+            onClick = {
+                keyboard?.hide()
+                handleIntent(LoginIntent.OnLoginClicked)
+                      },
             textId = R.string.login_login_button,
             enabled = state.isLoginButtonEnabled,
             isLoading = state.isLoading

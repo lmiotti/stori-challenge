@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
@@ -16,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import com.stori.challenge.R
 import com.stori.challenge.presentation.ui.theme.success
 
@@ -35,9 +38,18 @@ fun SuccessScreen() {
             tint = MaterialTheme.colorScheme.onPrimary
         )
         Text(
-            stringResource(id = R.string.registration_success),
+            modifier = Modifier
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_l)),
+            text = stringResource(id = R.string.registration_success),
             color = MaterialTheme.colorScheme.onPrimary,
-            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold)
+            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold),
+            textAlign = TextAlign.Center
         )
     }
+}
+
+@Preview
+@Composable
+fun SuccessScreenPreview() {
+    SuccessScreen()
 }
