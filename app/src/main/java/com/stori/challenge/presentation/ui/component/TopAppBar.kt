@@ -2,6 +2,7 @@ package com.stori.challenge.presentation.ui.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.KeyboardArrowRight
@@ -21,7 +22,9 @@ import com.stori.challenge.R
 @Composable
 fun StoriTopBar(
     showNavButton: Boolean = false,
-    onNavClicked: () -> Unit = {}
+    showAction: Boolean = false,
+    onNavClicked: () -> Unit = {},
+    onActionClicked: () -> Unit = {}
 ) {
     TopAppBar(
         modifier = Modifier.shadow(1.dp),
@@ -37,6 +40,17 @@ fun StoriTopBar(
                 IconButton(onClick = onNavClicked) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back",
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
+                }
+            }
+        },
+        actions = {
+            if (showAction) {
+                IconButton(onClick = onActionClicked) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                         contentDescription = "Back",
                         tint = MaterialTheme.colorScheme.secondary
                     )

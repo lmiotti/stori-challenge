@@ -76,7 +76,13 @@ fun NavManager() {
             )
         }
         composable<Routes.Home> {
-            HomeScreen()
+            HomeScreen(
+                goToLoginScreen = {
+                    navController.navigate(Routes.Login) {
+                        popUpTo(Routes.Home) { inclusive = true }
+                    }
+                },
+            )
         }
     }
 }

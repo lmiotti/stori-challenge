@@ -26,30 +26,28 @@ class RegisterUseCase @Inject constructor(
         val result = authRepository.createUser(form.email, form.password)
         result.collect {
             when (it) {
-                is Resource.Success -> emitAll(uploadImage(it.data?.user, form))
-                is Resource.Failure -> emit(Resource.Failure<Unit>(networkError = it.error!!))
+                is Resource.Success -> emitAll(uploadImage(form))
+                is Resource.Failure -> emit(Resource.Failure<Unit>(it.error))
                 is Resource.Loading -> emit(Resource.Loading<Unit>())
             }
         }
     }.flowOn(iODispatcher)
 
     private suspend fun uploadImage(
-        user: FirebaseUser?,
         form: RegistrationForm
     ): Flow<Resource<Unit>> = flow {
-        val result = profileRepository.uploadImage(user, form.photo ?: Uri.parse(""))
+        val result = profileRepository.uploadImage(form.photo)
         result.collect {
             when (it) {
-                is Resource.Success -> emitAll(updateProfile(user, form, it.data ?: ""))
-                is Resource.Failure -> emit(Resource.Failure(networkError = it.error!!))
+                is Resource.Success -> emitAll(updateProfile(form, it.data ?: ""))
+                is Resource.Failure -> emit(Resource.Failure(it.error))
                 is Resource.Loading -> emit(Resource.Loading())
             }
         }
     }
 
     private suspend fun updateProfile(
-        user: FirebaseUser?,
         form: RegistrationForm,
         imagePath: String
-    ): Flow<Resource<Unit>> = profileRepository.updateProfile(user, form, imagePath)
+    ): Flow<Resource<Unit>> = profileRepository.updateProfile(form, imagePath)
 }

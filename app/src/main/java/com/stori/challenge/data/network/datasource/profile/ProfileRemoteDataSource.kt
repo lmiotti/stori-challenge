@@ -8,13 +8,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface ProfileRemoteDataSource {
 
-    suspend fun uploadImage(image: Uri): Flow<Resource<String>>
+    suspend fun uploadImage(image: Uri?): Flow<Resource<String>>
     suspend fun updateProfile(
-        user: FirebaseUser?,
         name: String,
         surname: String,
+        email: String,
         imagePath: String
     ): Flow<Resource<Unit>>
 
-    fun getProfile(): Profile
+    fun getProfile(): Flow<Resource<Profile>>
 }

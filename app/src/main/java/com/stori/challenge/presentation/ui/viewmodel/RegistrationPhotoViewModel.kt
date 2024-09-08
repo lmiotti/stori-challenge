@@ -58,7 +58,7 @@ class RegistrationPhotoViewModel @AssistedInject constructor(
         viewModelScope.launch {
             registerUseCase(form.copy(photo = _state.value.photo)).collect {
                 if (it is Resource.Success) _goToHomeScreen.emit(Unit)
-                if (it is Resource.Failure) Log.e("ASD", "${it.error?.message}")
+                if (it is Resource.Failure) Log.e("ASD", "${it.error}")
             }
         }
     }

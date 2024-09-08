@@ -1,6 +1,9 @@
 package com.stori.challenge.data.network.model
 
-import android.net.Uri
-
-data class Profile(val fullName: String, val photo: Uri?) {
-}
+data class Profile(
+    val uid: String = "",
+    val name: String = "",
+    val surname: String = "",
+    val email: String = "",
+    val balance: Long = 0L
+)

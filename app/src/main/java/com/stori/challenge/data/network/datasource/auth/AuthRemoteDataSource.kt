@@ -23,14 +23,5 @@ interface AuthRemoteDataSource {
 
     suspend fun uploadImage(image: Uri): Flow<Resource<String>>
 
-    suspend fun updateProfile(
-        user: FirebaseUser?,
-        name: String,
-        surname: String,
-        photoPath: String
-    ): Flow<Resource<Unit>>
-
-    fun getProfile(): Profile
-
     fun signOut()
 }

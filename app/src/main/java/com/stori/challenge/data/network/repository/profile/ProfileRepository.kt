@@ -9,15 +9,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface ProfileRepository {
 
-    fun getProfile(): Profile
+    fun getProfile(): Flow<Resource<Profile>>
 
-    suspend fun uploadImage(
-        user: FirebaseUser?,
-        image: Uri
-    ): Flow<Resource<String>>
+    suspend fun uploadImage(image: Uri?): Flow<Resource<String>>
 
     suspend fun updateProfile(
-        user: FirebaseUser?,
         form: RegistrationForm,
         imagePath: String
     ): Flow<Resource<Unit>>

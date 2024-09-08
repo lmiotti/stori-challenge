@@ -13,18 +13,15 @@ class ProfileRepositoryImpl @Inject constructor(
     private val remoteDataSource: ProfileRemoteDataSource
 ): ProfileRepository {
 
-    override fun getProfile(): Profile {
+    override fun getProfile(): Flow<Resource<Profile>> {
         return remoteDataSource.getProfile()
     }
 
-    override suspend fun uploadImage(
-        user: FirebaseUser?,
-        image: Uri
-    ): Flow<Resource<String>> = remoteDataSource.uploadImage(image)
+    override suspend fun uploadImage(image: Uri?): Flow<Resource<String>> =
+        remoteDataSource.uploadImage(image)
 
     override suspend fun updateProfile(
-        user: FirebaseUser?,
         form: RegistrationForm,
         imagePath: String
-    ): Flow<Resource<Unit>> = remoteDataSource.updateProfile(user, form.name, form.surname, imagePath)
+    ): Flow<Resource<Unit>> = remoteDataSource.updateProfile(form.name, form.surname, form.email, imagePath)
 }
