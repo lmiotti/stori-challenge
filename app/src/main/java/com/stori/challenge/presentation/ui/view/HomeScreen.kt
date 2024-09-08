@@ -19,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.stori.challenge.presentation.ui.component.LoadingIndicator
 import com.stori.challenge.presentation.ui.component.StoriTopBar
+import com.stori.challenge.presentation.ui.intent.HomeIntent
 import com.stori.challenge.presentation.ui.viewmodel.HomeViewModel
 import kotlinx.coroutines.flow.collectLatest
 
@@ -51,7 +52,7 @@ fun HomeScreen(
             topBar = {
                 StoriTopBar(
                     showAction = true,
-                    onActionClicked = { viewModel.handleIntent() }
+                    onActionClicked = { viewModel.handleIntent(HomeIntent.OnSignOutClicked) }
                 )
             }
         ) {

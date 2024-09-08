@@ -1,22 +1,17 @@
 package com.stori.challenge.presentation.ui.viewmodel
 
-import androidx.lifecycle.ViewModel
 import com.stori.challenge.presentation.ui.intent.RegistrationFormIntent
 import com.stori.challenge.presentation.ui.state.RegistrationFormState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class RegistrationFormViewModel @Inject constructor(): ViewModel() {
+class RegistrationFormViewModel @Inject constructor(): BaseViewModel<RegistrationFormState, RegistrationFormIntent>(
+    initialState = RegistrationFormState()
+) {
 
-    private val _state = MutableStateFlow(RegistrationFormState())
-    val state: StateFlow<RegistrationFormState>
-        get() = _state
-
-    fun handleIntent(intent: RegistrationFormIntent) {
+    override fun handleIntent(intent: RegistrationFormIntent) {
         when (intent) {
             is RegistrationFormIntent.OnNameChanged -> _state.update { it.copy(name = intent.name) }
             is RegistrationFormIntent.OnSurameChanged -> _state.update { it.copy(surname = intent.surname) }

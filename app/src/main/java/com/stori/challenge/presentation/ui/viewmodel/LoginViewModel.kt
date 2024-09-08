@@ -1,11 +1,8 @@
 package com.stori.challenge.presentation.ui.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stori.challenge.domain.model.Resource
 import com.stori.challenge.domain.usecase.SignInUseCase
-import com.stori.challenge.extension.isEmailValid
-import com.stori.challenge.extension.isPasswordValid
 import com.stori.challenge.presentation.ui.intent.LoginIntent
 import com.stori.challenge.presentation.ui.state.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +17,9 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase
-): ViewModel() {
+): BaseViewModel<LoginState, LoginIntent>(
+    initialState = LoginState()
+) {
 
     private var _goToHomeScreen = MutableSharedFlow<Unit>()
     val goToHomeScreen: SharedFlow<Unit>
@@ -30,11 +29,7 @@ class LoginViewModel @Inject constructor(
     val showError: SharedFlow<String>
         get() = _showError
 
-    private val _state = MutableStateFlow(LoginState())
-    val state: StateFlow<LoginState>
-        get() = _state
-
-    fun handleIntent(intent: LoginIntent) {
+    override fun handleIntent(intent: LoginIntent) {
         when (intent) {
             is LoginIntent.OnEmailChanged -> _state.update { it.copy(email = intent.email) }
             is LoginIntent.OnPasswordChanged -> _state.update { it.copy(password = intent.password) }

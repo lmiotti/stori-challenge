@@ -7,6 +7,7 @@ import com.stori.challenge.domain.model.Resource
 import com.stori.challenge.domain.usecase.GetMovementsUseCase
 import com.stori.challenge.domain.usecase.GetProfileUseCase
 import com.stori.challenge.domain.usecase.SignOutUseCase
+import com.stori.challenge.presentation.ui.intent.HomeIntent
 import com.stori.challenge.presentation.ui.state.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,11 +24,9 @@ class HomeViewModel @Inject constructor(
     getProfileUseCase: GetProfileUseCase,
     getMovementsUseCase: GetMovementsUseCase,
     private val logOutUseCase: SignOutUseCase
-): ViewModel() {
-
-    private var _state = MutableStateFlow(HomeState())
-    val state: StateFlow<HomeState>
-        get() = _state
+): BaseViewModel<HomeState, HomeIntent>(
+    initialState = HomeState()
+) {
 
     private var _goToLoginScreen = MutableSharedFlow<Unit>()
     val goToLoginScreen: SharedFlow<Unit>
@@ -53,7 +52,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun handleIntent() {
+    override fun handleIntent(intent: HomeIntent) {
         signOut()
     }
 

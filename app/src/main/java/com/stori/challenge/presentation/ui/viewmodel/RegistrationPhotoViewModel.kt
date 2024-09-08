@@ -35,7 +35,9 @@ class RegistrationPhotoViewModel @AssistedInject constructor(
     @Assisted private val form: RegistrationForm,
     private val registerUseCase: RegisterUseCase,
     @DefaultDispatcher val defaultDispatcher: CoroutineDispatcher
-): ViewModel() {
+): BaseViewModel<RegistrationPhotoState, RegistrationPhotoIntent>(
+    initialState = RegistrationPhotoState()
+) {
 
     @AssistedFactory
     interface Factory {
@@ -50,12 +52,8 @@ class RegistrationPhotoViewModel @AssistedInject constructor(
     val showError: SharedFlow<String>
         get() = _showError
 
-    private val _state = MutableStateFlow(RegistrationPhotoState())
-    val state: StateFlow<RegistrationPhotoState>
-        get() = _state
 
-
-    fun handleIntent(intent: RegistrationPhotoIntent) {
+    override fun handleIntent(intent: RegistrationPhotoIntent) {
         when(intent) {
             is RegistrationPhotoIntent.OnTakePictureClicked -> _state.update { it.copy(photo = intent.photo) }
             is RegistrationPhotoIntent.OnRegisterClicked -> register()
