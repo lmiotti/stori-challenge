@@ -1,7 +1,6 @@
 package com.stori.challenge.presentation.ui.view
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -18,14 +17,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.stori.challenge.R
-import com.stori.challenge.presentation.ui.component.LoadingIndicator
 import com.stori.challenge.presentation.ui.component.StoriButton
 import com.stori.challenge.presentation.ui.component.StoriTextField
 import com.stori.challenge.presentation.ui.component.StoriTopBar
@@ -67,16 +64,10 @@ fun LoginScreen(
         }
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize()
+    Scaffold(
+        topBar = { StoriTopBar() }
     ) {
-        Scaffold(
-            topBar = { StoriTopBar() }
-        ) {
-            LoginScreenContent(it, state, handleIntent)
-        }
-
-        if (state.isLoading) LoadingIndicator()
+        LoginScreenContent(it, state, handleIntent)
     }
 }
 
@@ -123,7 +114,8 @@ fun LoginScreenContent(
             modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_xl)),
             onClick = { handleIntent(LoginIntent.OnLoginClicked) },
             textId = R.string.login_login_button,
-            enabled = state.isLoginButtonEnabled
+            enabled = state.isLoginButtonEnabled,
+            isLoading = state.isLoading
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
@@ -132,7 +124,8 @@ fun LoginScreenContent(
         )
         StoriButton(
             onClick = { handleIntent(LoginIntent.OnRegisterClicked) },
-            textId = R.string.login_register
+            textId = R.string.login_register,
+            enabled = !state.isLoading
         )
     }
 }

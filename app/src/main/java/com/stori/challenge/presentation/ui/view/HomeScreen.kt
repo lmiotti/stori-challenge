@@ -6,21 +6,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import com.stori.challenge.presentation.ui.component.LoadingIndicator
 import com.stori.challenge.presentation.ui.component.StoriTopBar
 import com.stori.challenge.presentation.ui.intent.HomeIntent
 import com.stori.challenge.presentation.ui.viewmodel.HomeViewModel
+import com.valentinilk.shimmer.shimmer
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -45,21 +46,15 @@ fun HomeScreen(
         }
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Scaffold(
-            topBar = {
-                StoriTopBar(
-                    showAction = true,
-                    onActionClicked = { viewModel.handleIntent(HomeIntent.OnSignOutClicked) }
-                )
-            }
-        ) {
-            HomeScreenContent(it)
+    Scaffold(
+        topBar = {
+            StoriTopBar(
+                showAction = true,
+                onActionClicked = { viewModel.handleIntent(HomeIntent.OnSignOutClicked) }
+            )
         }
-
-        if (state.isLoading) LoadingIndicator()
+    ) {
+        HomeScreenContent(it)
     }
 }
 
@@ -67,11 +62,4 @@ fun HomeScreen(
 fun HomeScreenContent(
     paddingValues: PaddingValues
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)
-    ) {
-
-    }
 }

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Stori Challenge</string>
 
-    <string name="loading">Loading ...</string>
+    <string name="loading">Please wait ...</string>
 
     <!-- Auth -->
     <string name="auth_email">Email</string>

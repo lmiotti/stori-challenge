@@ -41,7 +41,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.stori.challenge.R
-import com.stori.challenge.presentation.ui.component.LoadingIndicator
 import com.stori.challenge.presentation.ui.component.StoriButton
 import com.stori.challenge.presentation.ui.component.StoriTopBar
 import com.stori.challenge.presentation.ui.intent.RegistrationPhotoIntent
@@ -104,7 +103,6 @@ fun RegistrationPhotoScreen(
         }
 
         if (state.showSuccess) SuccessScreen()
-        if (state.isLoading) LoadingIndicator()
     }
 }
 
@@ -181,13 +179,15 @@ fun RegistrationPhotoScreenContent(
                     permissionLauncher.launch(Manifest.permission.CAMERA)
                 }
             },
-            textId = R.string.registration_take_picture_button
+            textId = R.string.registration_take_picture_button,
+            enabled = !state.isLoading
         )
         Spacer(modifier = Modifier.weight(1f))
         StoriButton(
             onClick = { handleIntent(RegistrationPhotoIntent.OnRegisterClicked) },
             textId = R.string.registration_register_button,
-            enabled = state.isRegisterButtonEnabled
+            enabled = state.isRegisterButtonEnabled,
+            isLoading = state.isLoading
         )
     }
 }
