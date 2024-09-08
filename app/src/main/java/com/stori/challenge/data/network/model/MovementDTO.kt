@@ -13,9 +13,8 @@ data class MovementDTO(
     val description: String = ""
 ) {
     fun toMovement(): Movement {
-        val sfd = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         return Movement(
-            date = sfd.format(this.date?.toDate() ?: Date()),
+            date = date?.toDate() ?: Date(),
             amount = this.amount,
             description = this.description
         )

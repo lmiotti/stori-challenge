@@ -1,5 +1,6 @@
 package com.stori.challenge.data.network.datasource.movements
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.stori.challenge.data.network.model.MovementDTO
@@ -24,6 +25,7 @@ class MovementsRemoteDataSourceImpl @Inject constructor(
                 val movements = collection.documents.mapNotNull { it.toObject(MovementDTO::class.java) }
                 Resource.Success(movements)
             } catch (e: Exception) {
+                Log.e("ASD", "${e.message}")
                 Resource.Failure(e.message)
             }
             emit(response)

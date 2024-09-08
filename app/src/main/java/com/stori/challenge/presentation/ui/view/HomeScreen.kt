@@ -174,14 +174,12 @@ fun HomeScreenContent(
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
             )
 
-        if (state.balance != 0F) {
-            BalanceCard(balance = state.balance)
-        }
 
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_xxl)))
         if (state.movements.isEmpty()) {
             HomeNoMovementsScreen()
         } else {
+            BalanceCard(balance = state.balance)
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_xxl)))
             MovementsList(
                 movements = state.movements,
                 onMovementClicked = { handleIntent(HomeIntent.OnMovementClicked(it)) }

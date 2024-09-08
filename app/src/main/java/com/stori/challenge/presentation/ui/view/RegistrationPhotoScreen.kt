@@ -1,8 +1,6 @@
 package com.stori.challenge.presentation.ui.view
 
 import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -31,9 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -46,11 +42,8 @@ import com.stori.challenge.presentation.ui.component.StoriTopBar
 import com.stori.challenge.presentation.ui.intent.RegistrationPhotoIntent
 import com.stori.challenge.presentation.ui.state.RegistrationPhotoState
 import com.stori.challenge.presentation.ui.viewmodel.RegistrationPhotoViewModel
+import com.stori.challenge.presentation.utils.FileUtils
 import kotlinx.coroutines.flow.collectLatest
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Objects
 
 @Composable
 fun RegistrationPhotoScreen(
@@ -113,11 +106,7 @@ fun RegistrationPhotoScreenContent(
     handleIntent: (RegistrationPhotoIntent) -> Unit,
 ) {
     val context = LocalContext.current
-    val file = context.createImageFile()
-    val uri = FileProvider.getUriForFile(
-        Objects.requireNonNull(context),
-        context.packageName + ".provider", file
-    )
+    val uri = FileUtils.createUri(context)
 
     val permissionCheckResult = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
 
@@ -130,11 +119,11 @@ fun RegistrationPhotoScreenContent(
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ){
-        if (it != null){
-            //viewModel.showToast(context,"Permiso Concedido")
+        if (it){
+            Toast.makeText(context, "Permissions granted", Toast.LENGTH_SHORT).show()
             cameraLauncher.launch(uri)
         }else{
-            //viewModel.showToast(context,"Permiso Denegado")
+            Toast.makeText(context, "Permissions denied", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -190,15 +179,4 @@ fun RegistrationPhotoScreenContent(
             isLoading = state.isLoading
         )
     }
-}
-
-@SuppressLint("SimpleDateFormat")
-fun Context.createImageFile(): File {
-    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-    val imageFileName = "JPEG_" + timeStamp + "_"
-    return File.createTempFile(
-        imageFileName,
-        ".jpg",
-        externalCacheDir
-    )
 }

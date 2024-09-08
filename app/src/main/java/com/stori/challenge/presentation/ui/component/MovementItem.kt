@@ -51,7 +51,7 @@ fun MovementItem(
                 Text(
                     modifier = Modifier
                         .padding(top = dimensionResource(id = R.dimen.padding_xs)),
-                    text = movement.date.toString(),
+                    text = movement.formattedDate,
                     style = MaterialTheme.typography.bodySmall
                 )
             }
@@ -71,7 +71,7 @@ fun MovementItem(
 @Composable
 fun MovementItemPreview() {
     val movement = Movement(
-        date = "01/01/00",
+        date = Date(),
         amount = 10000F,
         description = "Cashback"
     )

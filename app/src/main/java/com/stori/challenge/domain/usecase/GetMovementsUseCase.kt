@@ -22,7 +22,8 @@ class GetMovementsUseCase @Inject constructor(
         emitAll(repository.getMovements())
     }.map {
         when (it) {
-            is Resource.Success -> Resource.Success(it.data?.map { it.toMovement() } ?: listOf())
+            is Resource.Success -> Resource.Success(
+                it.data?.map { it.toMovement() }?.sortedBy { it.date } ?: listOf())
             is Resource.Failure -> Resource.Failure(it.error)
             is Resource.Loading -> Resource.Loading()
         }

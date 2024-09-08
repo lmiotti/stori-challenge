@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,28 +40,29 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            combine(getProfileUseCase(), getMovementsUseCase()) { prf, mvm ->
-                Pair(prf, mvm)
-            }.collect { (profile, movements) ->
-                val isLoading = profile is Resource.Loading || movements is Resource.Loading
-
-                when {
-                    profile is Resource.Success ->
-                        _state.update { it.copy(name = profile.data?.name ?: "", isLoading = isLoading) }
-                    movements is Resource.Success -> {
-                        val movementsList = movements.data ?: listOf()
-                        val balance = movementsList.mapNotNull { it.amount }.sum()
-                        _state.update {
-                            it.copy(movements = movementsList , isLoading = isLoading, balance = balance)
+            merge(getProfileUseCase(), getMovementsUseCase())
+                .onCompletion {
+                    _state.update { it.copy(isLoading = false) }
+                }.collect { response ->
+                    when(response) {
+                        is Resource.Loading -> _state.update { it.copy(isLoading = true) }
+                        is Resource.Success -> {
+                            val data = response.data
+                            if (data is Profile) {
+                                _state.update { it.copy(name = data.name) }
+                            }
+                            if (data is List<*>) {
+                                val movementList = data.filterIsInstance<Movement>()
+                                val balance = movementList.mapNotNull { it.amount }.sum()
+                                _state.update {
+                                    it.copy(movements = movementList, balance = balance)
+                                }
+                            }
                         }
+                        is Resource.Failure ->
+                            _showError.emit(response.error ?: "")
                     }
-                    profile is Resource.Failure || movements is Resource.Failure -> {
-                        _state.update { it.copy(isLoading = isLoading) }
-                        _showError.emit(profile.error ?: movements.error ?: "")
-                    }
-                    else -> _state.update { it.copy(isLoading = isLoading) }
                 }
-            }
         }
     }
 
