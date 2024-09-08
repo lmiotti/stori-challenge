@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -143,28 +144,28 @@ fun RegistrationPhotoScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
-            .padding(horizontal = 20.dp)
-            .padding(top = 20.dp)
+            .padding(horizontal = dimensionResource(id = R.dimen.padding_xl))
+            .padding(top = dimensionResource(id = R.dimen.padding_xl))
     ) {
         Text(
             text = stringResource(id = R.string.registration_form_title),
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
         )
         Text(
-            modifier = Modifier.padding(top = 15.dp),
+            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_l)),
             text = stringResource(id = R.string.registration_photo_description),
             style = MaterialTheme.typography.bodyMedium
         )
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 20.dp),
+                .padding(top = dimensionResource(id = R.dimen.padding_xl)),
             contentAlignment = Alignment.Center
         ) {
             Image(
                 modifier = Modifier
-                    .size(200.dp)
-                    .clip(RoundedCornerShape(10.dp)),
+                    .size(dimensionResource(id = R.dimen.registration_image_size))
+                    .clip(RoundedCornerShape(dimensionResource(id = R.dimen.corner_radius))),
                 painter = rememberAsyncImagePainter(
                     if (state.photo.path?.isNotEmpty() == true) state.photo else R.drawable.pic_take_picture
                 ),
@@ -172,7 +173,7 @@ fun RegistrationPhotoScreenContent(
             )
         }
         StoriButton(
-            modifier = Modifier.padding(top = 20.dp),
+            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_xl)),
             onClick = {
                 if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
                     cameraLauncher.launch(uri)

@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -68,33 +69,33 @@ fun RegistrationFormScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
-            .padding(horizontal = 20.dp)
-            .padding(top = 20.dp)
+            .padding(horizontal = dimensionResource(id = R.dimen.padding_xl))
+            .padding(top = dimensionResource(id = R.dimen.padding_xl))
     ) {
         Text(
             text = stringResource(id = R.string.registration_form_title),
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
         )
         Text(
-            modifier = Modifier.padding(top = 15.dp),
+            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_l)),
             text = stringResource(id = R.string.registration_form_description),
             style = MaterialTheme.typography.bodyMedium
         )
         StoriTextField(
-            modifier = Modifier.padding(top = 10.dp),
+            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_m)),
             labelId = R.string.registration_form_name,
             value = state.name,
             onValueChanged = { handleIntent(RegistrationFormIntent.OnNameChanged(it)) }
         )
         StoriTextField(
-            modifier = Modifier.padding(top = 5.dp),
+            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_s)),
             labelId = R.string.registration_form_surname,
             value = state.surname,
             onValueChanged = { handleIntent(RegistrationFormIntent.OnSurameChanged(it))
             }
         )
         StoriTextField(
-            modifier = Modifier.padding(top = 5.dp),
+            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_s)),
             labelId = R.string.auth_email,
             value = state.email,
             onValueChanged = { handleIntent(RegistrationFormIntent.OnEmailChanged(it)) },
@@ -102,7 +103,7 @@ fun RegistrationFormScreenContent(
             errorId = R.string.auth_email_error
         )
         StoriTextField(
-            modifier = Modifier.padding(top = 5.dp),
+            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_s)),
             labelId = R.string.auth_password,
             value = state.password,
             onValueChanged = { handleIntent(RegistrationFormIntent.OnPasswordChanged(it))
@@ -112,7 +113,7 @@ fun RegistrationFormScreenContent(
             isPasswordField = true
         )
         StoriTextField(
-            modifier = Modifier.padding(top = 5.dp),
+            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_s)),
             labelId = R.string.registration_form_confirm_password,
             value = state.confirmPassword,
             onValueChanged = { handleIntent(RegistrationFormIntent.OnConfirmPasswordChanged(it)) },

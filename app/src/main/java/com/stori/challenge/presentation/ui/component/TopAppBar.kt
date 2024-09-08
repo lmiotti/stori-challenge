@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.TopAppBar
+import androidx.compose.ui.res.dimensionResource
 import com.stori.challenge.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,7 +28,7 @@ fun StoriTopBar(
     onActionClicked: () -> Unit = {}
 ) {
     TopAppBar(
-        modifier = Modifier.shadow(1.dp),
+        modifier = Modifier.shadow(dimensionResource(id = R.dimen.top_bar_shadow)),
         title = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_stori),

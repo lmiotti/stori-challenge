@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import com.stori.challenge.R
 
 @Composable
 fun StoriButton(
@@ -20,7 +22,7 @@ fun StoriButton(
     Button(
         modifier = modifier
             .fillMaxWidth()
-            .height(50.dp),
+            .height(dimensionResource(id = R.dimen.button_height)),
         onClick = onClick,
         enabled = enabled
     ) {

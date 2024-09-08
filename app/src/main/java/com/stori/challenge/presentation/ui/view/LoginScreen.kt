@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -89,20 +90,20 @@ fun LoginScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
-            .padding(horizontal = 20.dp)
-            .padding(top = 20.dp)
+            .padding(horizontal = dimensionResource(id = R.dimen.padding_xl))
+            .padding(top = dimensionResource(id = R.dimen.padding_xl))
     ) {
         Text(
             text = stringResource(id = R.string.login_validate_identity),
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
         )
         Text(
-            modifier = Modifier.padding(top = 15.dp),
+            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_l)),
             text = stringResource(id = R.string.login_type_credentials),
             style = MaterialTheme.typography.bodyMedium
         )
         StoriTextField(
-            modifier = Modifier.padding(top = 10.dp),
+            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_m)),
             labelId = R.string.auth_email,
             value = state.email,
             onValueChanged = { handleIntent(LoginIntent.OnEmailChanged(it)) },
@@ -110,7 +111,7 @@ fun LoginScreenContent(
             errorId = R.string.auth_email_error
         )
         StoriTextField(
-            modifier = Modifier.padding(top = 5.dp),
+            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_s)),
             labelId = R.string.auth_password,
             value = state.password,
             onValueChanged = { handleIntent(LoginIntent.OnPasswordChanged(it)) },
@@ -119,14 +120,14 @@ fun LoginScreenContent(
             errorId = R.string.auth_password_error
         )
         StoriButton(
-            modifier = Modifier.padding(top = 20.dp),
+            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_xl)),
             onClick = { handleIntent(LoginIntent.OnLoginClicked) },
             textId = R.string.login_login_button,
             enabled = state.isLoginButtonEnabled
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            modifier = Modifier.padding(bottom = 15.dp),
+            modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_l)),
             text = stringResource(id = R.string.login_no_account)
         )
         StoriButton(
