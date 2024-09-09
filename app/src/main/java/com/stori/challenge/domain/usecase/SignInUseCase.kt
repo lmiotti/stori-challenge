@@ -23,7 +23,6 @@ class SignInUseCase @Inject constructor(
         emit(Resource.Loading<Unit>())
         emitAll(authRepository.signIn(email, password))
     }
-    .flowOn(iODispatcher)
     .map {
         when (it) {
             is Resource.Success -> Resource.Success(Unit)
@@ -31,4 +30,5 @@ class SignInUseCase @Inject constructor(
             is Resource.Loading -> Resource.Loading()
         }
     }
+    .flowOn(iODispatcher)
 }

@@ -2,6 +2,7 @@ package com.stori.challenge.presentation.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.stori.challenge.di.DefaultDispatcher
+import com.stori.challenge.di.MainDispatcher
 import com.stori.challenge.domain.model.RegistrationForm
 import com.stori.challenge.domain.model.Resource
 import com.stori.challenge.domain.usecase.RegisterUseCase
@@ -28,7 +29,8 @@ interface MyViewModelFactory {
 class RegistrationPhotoViewModel @AssistedInject constructor(
     @Assisted private val form: RegistrationForm,
     private val registerUseCase: RegisterUseCase,
-    @DefaultDispatcher val defaultDispatcher: CoroutineDispatcher
+    @DefaultDispatcher val defaultDispatcher: CoroutineDispatcher,
+    @MainDispatcher val mainDispatcher: CoroutineDispatcher
 ): BaseViewModel<RegistrationPhotoState, RegistrationPhotoIntent>(
     initialState = RegistrationPhotoState()
 ) {
@@ -56,7 +58,7 @@ class RegistrationPhotoViewModel @AssistedInject constructor(
     }
 
     private fun register() {
-        viewModelScope.launch {
+        viewModelScope.launch(mainDispatcher) {
             registerUseCase(form.copy(photo = _state.value.photo)).collect { response ->
                 when(response) {
                     is Resource.Loading -> _state.update { it.copy(isLoading = true) }
