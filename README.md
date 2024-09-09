@@ -30,6 +30,12 @@ For example, take a look to `RegisterUseCase`.
 `Repositories` seem to do no work here, but their purpose will make sense in the future when saving data into Cache or DB. 
 At this time, we are not going to implement them. 
 
+### Test User
+
+Email: test@test.com
+
+Password: Pass123!
+
 ### 🎬 Recording
 
 https://github.com/user-attachments/assets/aee8a877-7c3f-46ce-a601-fecf46873a63
