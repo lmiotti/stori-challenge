@@ -154,7 +154,7 @@ fun RegistrationPhotoScreenContent(
                     .size(dimensionResource(id = R.dimen.registration_image_size))
                     .clip(RoundedCornerShape(dimensionResource(id = R.dimen.corner_radius))),
                 painter = rememberAsyncImagePainter(
-                    if (state.photo.path?.isNotEmpty() == true) state.photo else R.drawable.pic_take_picture
+                    if (state.photo?.path?.isNotEmpty() == true) state.photo else R.drawable.pic_take_picture
                 ),
                 contentDescription = null
             )

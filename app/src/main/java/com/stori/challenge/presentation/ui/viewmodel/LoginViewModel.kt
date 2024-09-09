@@ -1,22 +1,24 @@
 package com.stori.challenge.presentation.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import com.stori.challenge.di.MainDispatcher
 import com.stori.challenge.domain.model.Resource
 import com.stori.challenge.domain.usecase.SignInUseCase
 import com.stori.challenge.presentation.ui.intent.LoginIntent
 import com.stori.challenge.presentation.ui.state.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val signInUseCase: SignInUseCase
+    private val signInUseCase: SignInUseCase,
+    @MainDispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ): BaseViewModel<LoginState, LoginIntent>(
     initialState = LoginState()
 ) {
@@ -42,7 +44,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun login() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             val signIn = signInUseCase(_state.value.email, _state.value.password)
             signIn.collect {
                 when(it) {
