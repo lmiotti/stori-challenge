@@ -7,16 +7,22 @@ import java.util.Date
 import java.util.Locale
 
 data class MovementDTO(
+    val id: String = "",
     val userId: String = "",
     val date: Timestamp? = null,
     val amount: Float = 0F,
-    val description: String = ""
+    val description: String = "",
+    val state: String = "",
+    val type: String = ""
 ) {
     fun toMovement(): Movement {
         return Movement(
-            date = date?.toDate() ?: Date(),
+            id = this.id,
+            date = this.date?.toDate() ?: Date(),
             amount = this.amount,
-            description = this.description
+            description = this.description,
+            state = this.state,
+            type = this.type
         )
     }
 }

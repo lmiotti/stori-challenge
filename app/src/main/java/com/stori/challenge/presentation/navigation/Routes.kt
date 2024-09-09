@@ -1,5 +1,6 @@
 package com.stori.challenge.presentation.navigation
 
+import com.stori.challenge.domain.model.Movement
 import kotlinx.serialization.Serializable
 
 sealed class Routes {
@@ -25,5 +26,12 @@ sealed class Routes {
     data object Home: Routes()
 
     @Serializable
-    data object MovementDetails: Routes()
+    data class MovementDetails(
+        val id: String,
+        val date: String,
+        val amount: Float,
+        val description: String,
+        val state: String,
+        val type: String
+    ): Routes()
 }

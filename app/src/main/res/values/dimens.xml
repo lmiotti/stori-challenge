@@ -31,5 +31,6 @@
     <dimen name="home_movement_height">70dp</dimen>
     <dimen name="home_no_movements_size">150dp</dimen>
     <dimen name="home_loading_height">250dp</dimen>
+    <dimen name="home_movement_detail_logo_size">150dp</dimen>
 
 </resources>

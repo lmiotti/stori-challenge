@@ -13,11 +13,16 @@ class RegistrationFormViewModel @Inject constructor(): BaseViewModel<Registratio
 
     override fun handleIntent(intent: RegistrationFormIntent) {
         when (intent) {
-            is RegistrationFormIntent.OnNameChanged -> _state.update { it.copy(name = intent.name) }
-            is RegistrationFormIntent.OnSurameChanged -> _state.update { it.copy(surname = intent.surname) }
-            is RegistrationFormIntent.OnEmailChanged -> _state.update { it.copy(email = intent.email) }
-            is RegistrationFormIntent.OnPasswordChanged -> _state.update { it.copy(password = intent.password) }
-            is RegistrationFormIntent.OnConfirmPasswordChanged -> _state.update { it.copy(confirmPassword = intent.confirmPassword) }
+            is RegistrationFormIntent.OnNameChanged ->
+                _state.update { it.copy(name = intent.name) }
+            is RegistrationFormIntent.OnSurameChanged ->
+                _state.update { it.copy(surname = intent.surname) }
+            is RegistrationFormIntent.OnEmailChanged ->
+                _state.update { it.copy(email = intent.email) }
+            is RegistrationFormIntent.OnPasswordChanged ->
+                _state.update { it.copy(password = intent.password) }
+            is RegistrationFormIntent.OnConfirmPasswordChanged ->
+                _state.update { it.copy(confirmPassword = intent.confirmPassword) }
             else -> {}
         }
     }

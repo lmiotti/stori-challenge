@@ -32,13 +32,19 @@ fun StoriTopBar(
     TopAppBar(
         modifier = Modifier.shadow(dimensionResource(id = R.dimen.top_bar_shadow)),
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = if (isHome) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary
+            containerColor = if (isHome)
+                MaterialTheme.colorScheme.primary
+            else
+                MaterialTheme.colorScheme.onPrimary
         ),
         title = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_stori),
                 contentDescription = "Logo",
-                tint = if (isHome) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
+                tint = if (isHome)
+                    MaterialTheme.colorScheme.onPrimary
+                else
+                    MaterialTheme.colorScheme.secondary
             )
         },
         navigationIcon = {
@@ -47,7 +53,10 @@ fun StoriTopBar(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Back",
-                        tint = if (isHome) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
+                        tint = if (isHome)
+                            MaterialTheme.colorScheme.onPrimary
+                        else
+                            MaterialTheme.colorScheme.secondary
                     )
                 }
             }
@@ -58,7 +67,10 @@ fun StoriTopBar(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                         contentDescription = "Back",
-                        tint = if (isHome) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
+                        tint = if (isHome)
+                            MaterialTheme.colorScheme.onPrimary
+                        else
+                            MaterialTheme.colorScheme.secondary
                     )
                 }
             }

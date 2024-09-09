@@ -37,7 +37,7 @@ fun MovementsList(
         Spacer(
             modifier = Modifier.height(dimensionResource(id = R.dimen.padding_m)),
         )
-        movements.take(5).forEach {
+        movements.forEach {
             MovementItem(
                 movement = it,
                 onMovementClicked = { onMovementClicked(it) }

@@ -84,12 +84,26 @@ fun NavManager() {
                     }
                 },
                 goToMovementDetail = {
-                    navController.navigate(Routes.MovementDetails)
+                    navController.navigate(Routes.MovementDetails(
+                        id = it.id,
+                        date = it.formattedDate,
+                        amount = it.amount,
+                        description = it.description,
+                        state = it.state,
+                        type = it.type
+                    ))
                 }
             )
         }
         composable<Routes.MovementDetails> {
+            val route: Routes.MovementDetails = it.toRoute()
             MovementDetailsScreen(
+                id = route.id,
+                date = route.date,
+                amount = route.amount,
+                description = route.description,
+                state = route.state,
+                type = route.type,
                 goBackClicked = { navController.popBackStack() }
             )
         }

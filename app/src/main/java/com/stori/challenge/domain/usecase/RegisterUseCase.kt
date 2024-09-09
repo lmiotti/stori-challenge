@@ -1,7 +1,5 @@
 package com.stori.challenge.domain.usecase
 
-import android.net.Uri
-import com.google.firebase.auth.FirebaseUser
 import com.stori.challenge.data.network.repository.auth.AuthRepository
 import com.stori.challenge.data.network.repository.profile.ProfileRepository
 import com.stori.challenge.di.IoDispatcher
@@ -9,7 +7,6 @@ import com.stori.challenge.domain.model.RegistrationForm
 import com.stori.challenge.domain.model.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn

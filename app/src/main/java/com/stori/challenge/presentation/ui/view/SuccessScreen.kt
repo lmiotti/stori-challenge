@@ -47,9 +47,3 @@ fun SuccessScreen() {
         )
     }
 }
-
-@Preview
-@Composable
-fun SuccessScreenPreview() {
-    SuccessScreen()
-}

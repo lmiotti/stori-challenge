@@ -23,7 +23,8 @@ class GetMovementsUseCase @Inject constructor(
     }.map {
         when (it) {
             is Resource.Success -> Resource.Success(
-                it.data?.map { it.toMovement() }?.sortedBy { it.date } ?: listOf())
+                it.data?.map { it.toMovement() }?.sortedBy { it.date }?.reversed() ?: listOf()
+            )
             is Resource.Failure -> Resource.Failure(it.error)
             is Resource.Loading -> Resource.Loading()
         }

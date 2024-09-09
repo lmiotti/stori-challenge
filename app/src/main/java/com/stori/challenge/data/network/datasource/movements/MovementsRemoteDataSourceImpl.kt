@@ -1,8 +1,8 @@
 package com.stori.challenge.data.network.datasource.movements
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.stori.challenge.data.network.FirebaseConstants
 import com.stori.challenge.data.network.model.MovementDTO
 import com.stori.challenge.domain.model.Resource
 import kotlinx.coroutines.flow.Flow
@@ -18,14 +18,13 @@ class MovementsRemoteDataSourceImpl @Inject constructor(
     override suspend fun getMovements(): Flow<Resource<List<MovementDTO>>> = flow {
         firebaseAuth.currentUser?.uid?.let { uid ->
             val response = try {
-                val collection = firestore.collection("Movements")
-                    .whereEqualTo("userId", uid)
+                val collection = firestore.collection(FirebaseConstants.CollectionPath.MOVEMENTS)
+                    .whereEqualTo(FirebaseConstants.Field.USER_ID, uid)
                     .get()
                     .await()
                 val movements = collection.documents.mapNotNull { it.toObject(MovementDTO::class.java) }
                 Resource.Success(movements)
             } catch (e: Exception) {
-                Log.e("ASD", "${e.message}")
                 Resource.Failure(e.message)
             }
             emit(response)

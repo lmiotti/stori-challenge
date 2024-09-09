@@ -4,6 +4,8 @@ import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.StorageReference
+import com.stori.challenge.data.network.FirebaseConstants.Field
+import com.stori.challenge.data.network.FirebaseConstants.CollectionPath
 import com.stori.challenge.data.network.model.ProfileDTO
 import com.stori.challenge.domain.model.Resource
 import kotlinx.coroutines.flow.Flow
@@ -40,14 +42,14 @@ class ProfileRemoteDataSourceImpl @Inject constructor(
     ): Flow<Resource<Unit>> = flow {
         firebaseAuth.currentUser?.uid?.let { uid ->
             val map = mutableMapOf(
-                "uid" to uid,
-                "name" to name,
-                "surname" to surname,
-                "email" to email,
-                "imagePath" to imagePath
+                Field.UID to uid,
+                Field.NAME to name,
+                Field.SURNAME to surname,
+                Field.EMAIL to email,
+                Field.IMAGE_PATH to imagePath
             )
             val response = try {
-                firestore.collection("Users").add(map).await()
+                firestore.collection(CollectionPath.USERS).add(map).await()
                 Resource.Success(Unit)
             } catch (e: Exception) {
                 Resource.Failure(e.message)
@@ -59,8 +61,8 @@ class ProfileRemoteDataSourceImpl @Inject constructor(
     override fun getProfile(): Flow<Resource<ProfileDTO>> = flow {
         firebaseAuth.currentUser?.uid?.let { uid ->
             val response = try {
-                val collection = firestore.collection("Users")
-                    .whereEqualTo("uid", uid)
+                val collection = firestore.collection(CollectionPath.USERS)
+                    .whereEqualTo(Field.UID, uid)
                     .get()
                     .await()
                 Resource.Success(collection.documents.mapNotNull { it.toObject(ProfileDTO::class.java) }.first())

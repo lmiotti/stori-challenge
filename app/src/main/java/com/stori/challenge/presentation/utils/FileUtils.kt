@@ -11,13 +11,16 @@ import java.util.Objects
 
 object FileUtils {
 
+    private const val FILE_DATE_FORMAT = "yyyyMMdd_HHmmss"
+    private const val FILE_EXTENSION = ".jpg"
+
     @SuppressLint("SimpleDateFormat")
     private fun createImageFile(context: Context): File {
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val timeStamp = SimpleDateFormat(FILE_DATE_FORMAT).format(Date())
         val imageFileName = "JPEG_" + timeStamp + "_"
         return File.createTempFile(
             imageFileName,
-            ".jpg",
+            FILE_EXTENSION,
             context.externalCacheDir
         )
     }

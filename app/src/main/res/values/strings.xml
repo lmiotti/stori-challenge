@@ -31,7 +31,7 @@
 
     <!-- Home -->
     <string name="home_hi_format">Hi %s!</string>
-    <string name="home_balance">Balance</string>
+    <string name="home_balance">Account balance</string>
     <string name="home_money_format">$ %.2f</string>
     <string name="home_movements">Movements</string>
 

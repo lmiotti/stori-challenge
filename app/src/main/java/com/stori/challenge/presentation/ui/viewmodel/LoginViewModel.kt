@@ -31,9 +31,12 @@ class LoginViewModel @Inject constructor(
 
     override fun handleIntent(intent: LoginIntent) {
         when (intent) {
-            is LoginIntent.OnEmailChanged -> _state.update { it.copy(email = intent.email) }
-            is LoginIntent.OnPasswordChanged -> _state.update { it.copy(password = intent.password) }
-            is LoginIntent.OnLoginClicked -> login()
+            is LoginIntent.OnEmailChanged ->
+                _state.update { it.copy(email = intent.email) }
+            is LoginIntent.OnPasswordChanged ->
+                _state.update { it.copy(password = intent.password) }
+            is LoginIntent.OnLoginClicked ->
+                login()
             else -> {}
         }
     }
